@@ -32,7 +32,9 @@ class Node:
 
     def draw_self(self, screen):
         '''
-        Draws each individual node, if its occupied by obstacles, skips this
+        Draws each individual node
+        If its occupied by obstacles, draws it as orange
+        If not will not be drawn at all, effectively appearing as empty space on the grid
         '''
         if self.occupied:  # If current node is not permissible to the robot
             rect = pygame.Rect(0, 0, settings.GRID_CELL_LENGTH,
