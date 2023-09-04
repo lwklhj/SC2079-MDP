@@ -16,10 +16,12 @@ class Robot:
         # Note that we assume the robot starts always facing the top.
         # This value will never change, but it will not affect us as the robot uses a more fine-tuned internal
         # angle tracker.
-        self.pos = RobotPosition(settings.ROBOT_SAFETY_DISTANCE,
-                                 settings.ROBOT_SAFETY_DISTANCE,
-                                 Direction.TOP,
-                                 90)
+        self.pos = RobotPosition(
+            settings.ROBOT_SAFETY_DISTANCE,
+            settings.ROBOT_SAFETY_DISTANCE,
+            Direction.TOP,
+            90
+        )
         self._start_copy = self.pos.copy()
 
         self.brain = Brain(self, grid)

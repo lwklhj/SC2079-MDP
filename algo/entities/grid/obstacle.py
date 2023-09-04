@@ -13,6 +13,7 @@ class Obstacle:
         y -> y-coordinate of the obstacle.
         Note x, y coordinates should not be scaled.
         direction -> Which direction the image is facing. If image is on the right side of the obstacle, RIGHT.
+        index -> Index of the obstacle.
         """
         # Check if the coordinates are multiples of 10 with offset 5. If they are not, then they are invalid
         # obstacle coordinates.
@@ -85,6 +86,9 @@ class Obstacle:
             return RobotPosition(self.pos.x + settings.OBSTACLE_SAFETY_WIDTH + settings.OBSTACLE_LENGTH, self.pos.y, Direction.LEFT)
 
     def draw_self(self, screen):
+        '''
+        Draws the 
+        '''
         # Draw the obstacle onto the grid.
         # We need to translate the obstacle's center into that with respect to PyGame
         # Get the coordinates of the grid's bottom left-hand corner.
@@ -128,6 +132,11 @@ class Obstacle:
                          points[0].xy_pygame(), points[1].xy_pygame())
 
     def draw_robot_target(self, screen):
+        '''
+        Draws the arrow.
+        The image is intrinsically facing North (upwards). image: "algo/entities/assets/target-arrow.png"
+        Rotates by a counter-clockwise angle in degrees.
+        '''
         target = self.get_robot_target_pos()
 
         rot_image = self.target_image
@@ -137,7 +146,7 @@ class Obstacle:
         elif target.direction == Direction.LEFT:
             angle = 90
         elif target.direction == Direction.RIGHT:
-            angle = -90
+            angle = 270
 
         rot_image = pygame.transform.rotate(rot_image, angle)
         rect = rot_image.get_rect()

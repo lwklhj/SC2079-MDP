@@ -33,6 +33,11 @@ class Position:
     def xy_pygame(self):
         """
         Return the x, y coordinates in terms of Pygame coordinates. Useful for drawing on screen.
+
+        In Pygame, the coordinate system has its origin (0, 0) at the top-left corner of the window, 
+        with the y-coordinate increasing as you move down the screen. 
+        In contrast, many grid-based systems have their origin at the bottom-left corner of the grid, 
+        with the y-coordinate increasing as you move up the grid.
         """
         return self.x, settings.GRID_LENGTH - self.y
 

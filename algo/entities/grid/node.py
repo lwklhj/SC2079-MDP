@@ -1,7 +1,6 @@
 import pygame
 
 import settings
-# from entities.assets import colors
 import entities.assets.colors as colors
 from entities.grid.position import Position
 
