@@ -87,7 +87,7 @@ class Obstacle:
 
     def draw_self(self, screen):
         '''
-        Draws the 
+        Draws the black and red rectangles showing the obstacles on the screen
         '''
         # Draw the obstacle onto the grid.
         # We need to translate the obstacle's center into that with respect to PyGame
@@ -115,6 +115,9 @@ class Obstacle:
         pygame.draw.rect(screen, colors.RED, rect)
 
     def draw_virtual_boundary(self, screen):
+        '''
+        Draws the blue boundary around the obstacle
+        '''
         # Get the boundary points
         points = self.get_boundary_points()
 

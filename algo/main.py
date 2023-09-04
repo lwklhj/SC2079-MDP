@@ -33,7 +33,7 @@ def run_simulator():
         [195, 95, 180, 2],
         [175, 185, -90, 3],
         [75, 125, 90, 4],
-        [15, 185, -90, 5]
+        [15, 195, -90, 5]
     ]
     obs = parse_obstacle_data(obstacles)
     app = AlgoSimulator(obs)

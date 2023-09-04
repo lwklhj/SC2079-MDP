@@ -31,6 +31,9 @@ class Node:
         return Node(self.pos.x, self.pos.y, self.occupied, self.pos.direction)
 
     def draw_self(self, screen):
+        '''
+        Draws each individual node, if its occupied by obstacles, skips this
+        '''
         if self.occupied:  # If current node is not permissible to the robot
             rect = pygame.Rect(0, 0, settings.GRID_CELL_LENGTH,
                                settings.GRID_CELL_LENGTH)
@@ -38,6 +41,9 @@ class Node:
             pygame.draw.rect(screen, colors.ORANGE, rect)
 
     def draw_boundary(self, screen):
+        '''
+        Draws each individual node's boundary
+        '''
         x_pygame, y_pygame = self.pos.xy_pygame()
 
         left = x_pygame - settings.GRID_CELL_LENGTH // 2
