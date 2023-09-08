@@ -78,7 +78,8 @@ class Brain:
         self.simple_hamiltonian = self.compute_simple_hamiltonian_path()
         print()
 
-        curr = self.robot.pos.copy()  # We use a copy rather than get a reference.
+        # We use a copy rather than get a reference.
+        curr = self.robot.pos.copy()
         for obstacle in self.simple_hamiltonian:
             target = obstacle.get_robot_target_pos()
             print(f"Planning {curr} to {target}")
@@ -88,7 +89,9 @@ class Brain:
             else:
                 print("\tPath found.")
                 curr = res
-                self.commands.append(ScanCommand(settings.ROBOT_SCAN_TIME, obstacle.index))
+                self.commands.append(ScanCommand(
+                    settings.ROBOT_SCAN_TIME, obstacle.index))
 
+        print(self.commands)
         self.compress_paths()
         print("-" * 40)

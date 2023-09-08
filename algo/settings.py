@@ -6,7 +6,7 @@ FRAMES = 60
 WINDOW_SIZE = 800, 800
 
 # Connection to RPi
-RPI_HOST: str = "192.168.8.8"
+RPI_HOST: str = "192.168.6.6"
 RPI_PORT: int = 4160
 
 # Connection to PC
@@ -21,7 +21,7 @@ ROBOT_SPEED_PER_SECOND = 100 * SCALING_FACTOR
 ROBOT_S_FACTOR = ROBOT_LENGTH / ROBOT_TURN_RADIUS
 ROBOT_SAFETY_DISTANCE = 15 * SCALING_FACTOR
 # Time provided for scanning an obstacle image in seconds.
-ROBOT_SCAN_TIME = 0.25
+ROBOT_SCAN_TIME = 1
 
 # Grid Attributes
 GRID_LENGTH = 200 * SCALING_FACTOR
