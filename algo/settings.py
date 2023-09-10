@@ -7,7 +7,7 @@ WINDOW_SIZE = 800, 800
 
 # Connection to RPi
 RPI_HOST: str = "192.168.6.6"
-RPI_PORT: int = 4160
+RPI_PORT: int = 1234
 
 # Connection to PC
 PC_HOST: str = socket.gethostbyname(socket.gethostname())
