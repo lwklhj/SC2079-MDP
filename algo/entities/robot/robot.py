@@ -16,9 +16,13 @@ class Robot:
         # Note that we assume the robot starts always facing the top.
         # This value will never change, but it will not affect us as the robot uses a more fine-tuned internal
         # angle tracker.
+        # To set the starting position of the robot, change the values in the RobotPosition constructor.
+        # There is a scaling factor for x and y coordinates accordings to SCALING_FACTOR in settings.py.
         self.pos = RobotPosition(
-            settings.ROBOT_SAFETY_DISTANCE,
-            settings.ROBOT_SAFETY_DISTANCE,
+            # settings.ROBOT_SAFETY_DISTANCE,
+            # settings.ROBOT_SAFETY_DISTANCE,
+            55 * settings.SCALING_FACTOR,
+            15 * settings.SCALING_FACTOR,
             Direction.TOP,
             90
         )

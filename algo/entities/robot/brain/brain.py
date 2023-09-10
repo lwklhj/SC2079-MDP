@@ -92,6 +92,7 @@ class Brain:
                 self.commands.append(ScanCommand(
                     settings.ROBOT_SCAN_TIME, obstacle.index))
 
-        print(self.commands)
+        print("Before compression:", self.commands)
         self.compress_paths()
+        print("After compression:", self.commands)
         print("-" * 40)
