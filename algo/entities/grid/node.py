@@ -14,7 +14,9 @@ class Node:
         self.occupied = occupied
 
     def __str__(self):
-        return f"Node({self.pos})"
+        return f"Node(Position({(self.pos.x // settings.SCALING_FACTOR)}, "\
+               f"{(self.pos.y // settings.SCALING_FACTOR)}, occupied= {self.occupied}, "\
+               f"angle={self.pos.direction})"
 
     __repr__ = __str__
 

@@ -7,7 +7,7 @@ WINDOW_SIZE = 800, 800
 
 # Connection to RPi
 RPI_HOST: str = "192.168.6.6"
-RPI_PORT: int = 4160
+RPI_PORT: int = 1234
 
 # Connection to PC
 PC_HOST: str = socket.gethostbyname(socket.gethostname())
@@ -33,6 +33,7 @@ GRID_NUM_GRIDS = GRID_LENGTH // GRID_CELL_LENGTH
 OBSTACLE_LENGTH = 10 * SCALING_FACTOR
 OBSTACLE_SAFETY_WIDTH = ROBOT_SAFETY_DISTANCE // 3 * \
     4  # With respect to the center of the obstacle
+# Currently is 15//3*4 = 20
 
 # Path Finding Attributes
 PATH_TURN_COST = 999 * ROBOT_SPEED_PER_SECOND * ROBOT_TURN_RADIUS

@@ -99,4 +99,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    run_minimal(True)
+    # run_minimal(True)
+    run_simulator()
