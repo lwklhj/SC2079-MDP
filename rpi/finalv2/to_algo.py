@@ -2,6 +2,7 @@
 import socket
 import threading
 import time
+import pickle
 
 def myround(x,base=5):
   print('Entering my round',x)
@@ -36,49 +37,64 @@ class algoInterface:
     def read(self):
         while True:
             try:
+                # 1024/5 commands
                 message = self.clientSocket.recv(1024)
-                message = message.decode()
-                if message:
+                commands = pickle.load(message)
+                if (len(commands) > 0):
                     print("From ALGO:", message)
-                if ('Hello' not in message and 'AND' not in message and 'Update' not in message and 'NOTHING' not in message and 'conda' not in message):
-                    #message = message[4:]
-                    commands = message.split(',')
-                    convertedLetters = []
-                    for command in commands:
-                        print("commandEnter:",command)
-                        if (command == '0000'): continue
-                        if (command[2]!='0' and (command[3]=='0' or command[3]=='1')):
-                            print('Entering myround attempt')
-                            roundedValue = str(myround(int(command[2])))
-                            print('roundedVal:',roundedValue)
-                            if (roundedValue == '0'):
-                                print('zero case detected')
-                                pass
-                            elif roundedValue == '10':
-                                convertedLetters.append(self.convertCommandToLetter('010'+command[3]))
-                            else: 
-                                convertedLetters.append(self.convertCommandToLetter('005'+command[3]))
-                        convertedLetters.append(self.convertCommandToLetter(command))
-                    print("Full conversion: ", convertedLetters)
-                    i = 0
-                    for letter in convertedLetters:
-                        # Sending Commands to STM
-                        print('Sending to STM:', letter)
-                        self.RPI.stm.send(letter)
+                for command in commands:
+                    if(command == "sssss"):
+                        self.RPI.imrec.take_picture()
+                        # Send results to Android
+                    else:
+                        self.RPI.stm.send(command)
+                        # Give coord to Android
+                        #self.RPI.android.write(message)
 
-                        # Sending commands to Android
+
+                # message = self.clientSocket.recv(1024)
+                # message = message.decode()
+                # if message:
+                #     print("From ALGO:", message)
+                # if ('Hello' not in message and 'AND' not in message and 'Update' not in message and 'NOTHING' not in message and 'conda' not in message):
+                #     #message = message[4:]
+                #     commands = message.split(',')
+                #     convertedLetters = []
+                #     for command in commands:
+                #         print("commandEnter:",command)
+                #         if (command == '0000'): continue
+                #         if (command[2]!='0' and (command[3]=='0' or command[3]=='1')):
+                #             print('Entering myround attempt')
+                #             roundedValue = str(myround(int(command[2])))
+                #             print('roundedVal:',roundedValue)
+                #             if (roundedValue == '0'):
+                #                 print('zero case detected')
+                #                 pass
+                #             elif roundedValue == '10':
+                #                 convertedLetters.append(self.convertCommandToLetter('010'+command[3]))
+                #             else: 
+                #                 convertedLetters.append(self.convertCommandToLetter('005'+command[3]))
+                #         convertedLetters.append(self.convertCommandToLetter(command))
+                #     print("Full conversion: ", convertedLetters)
+                #     i = 0
+                #     for letter in convertedLetters:
+                #         # Sending Commands to STM
+                #         print('Sending to STM:', letter)
+                #         self.RPI.stm.send(letter)
+
+                #         # Sending commands to Android
                         
-                        messageToAndroid = "COMMAND FOUR DIGIT," + commands[i]
-                        self.RPI.android.write(messageToAndroid)
-                        i = i+1
+                #         messageToAndroid = "COMMAND FOUR DIGIT," + commands[i]
+                #         self.RPI.android.write(messageToAndroid)
+                #         i = i+1
                         
 
-                    #after full list of commands is sent, take a picture
-                    self.RPI.imrec.take_picture()
+                #     #after full list of commands is sent, take a picture
+                #     self.RPI.imrec.take_picture()
 
-                #Update Android with coordinates
-                elif("Update Android" in message):
-                    self.RPI.android.write(message)
+                # #Update Android with coordinates
+                # elif("Update Android" in message):
+                #     self.RPI.android.write(message)
                     
             except Exception as e:
                 print("Algo Disconnected! (ALGO READ)")
