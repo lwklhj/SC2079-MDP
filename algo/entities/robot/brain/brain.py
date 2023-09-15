@@ -6,6 +6,7 @@ from typing import Tuple
 import settings
 from entities.commands.scan_command import ScanCommand
 from entities.commands.straight_command import StraightCommand
+from entities.commands.update_command import UpdateCommand
 from entities.grid.obstacle import Obstacle
 from entities.robot.brain.mod_a_star import ModifiedAStar
 
@@ -95,4 +96,20 @@ class Brain:
         print("Before compression:", self.commands)
         self.compress_paths()
         print("After compression:", self.commands)
+        self.add_update_commands()
+        print("After adding update commands:", self.commands)
         print("-" * 40)
+
+    def add_update_commands(self):
+        # We use a copy rather than get a reference.
+        self.curr = self.robot._start_copy.copy()
+        i = 0
+        while i < len(self.commands):
+            command = self.commands[i]
+            if(isinstance(command, ScanCommand)):
+                i+=1
+            else:
+                command.apply_on_pos(self.curr)
+                # Remember to copy the pos
+                self.commands.insert(i+1, UpdateCommand(self.curr.copy()))
+                i+=2
