@@ -44,12 +44,13 @@ class algoInterface:
                     print("From ALGO:", message)
                 for command in commands:
                     if(command == "sssss"):
-                        self.RPI.imrec.take_picture()
+                        result = self.RPI.imrec.take_picture()
                         # Send results to Android
+                        # self.RPI.android.write(msg)
                     else:
                         self.RPI.stm.send(command)
                         # Give coord to Android
-                        #self.RPI.android.write(message)
+                        # self.RPI.android.write(msg)
 
 
                 # message = self.clientSocket.recv(1024)
