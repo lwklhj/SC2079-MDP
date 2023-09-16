@@ -27,7 +27,7 @@ class Obstacle:
                             y * settings.SCALING_FACTOR, direction)
 
         # Arrow to draw at the target coordinate.
-        self.target_image = pygame.transform.scale(pygame.image.load("entities/assets/target-arrow.png"),
+        self.target_image = pygame.transform.scale(pygame.image.load("algo/entities/assets/target-arrow.png"),
                                                    (50, 50))
 
         self.index = index
