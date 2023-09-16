@@ -31,7 +31,7 @@ class RPI:
         #self.imrec.connectImrec()
 rpi = RPI()
 #rpi.connect()
-rpi.imrec.take_picture
+print(rpi.imrec.take_picture)
         
 
 
