@@ -14,6 +14,10 @@ class STMInterface:
             except Exception as e2:
                 print("Failed to connect to STM")
     def send(self,cmd):
+        # Testing purpose
+        time.sleep(100)
+        return
+    
         print(f"Sending Commands to STM: {cmd}")
         sc = str.encode(cmd)
         self.ser.write(sc)
