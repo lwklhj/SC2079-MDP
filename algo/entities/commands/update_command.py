@@ -28,11 +28,11 @@ class UpdateCommand(Command):
         
         match self.position.direction:
             case Direction.TOP:
-                direction = 'U'
+                direction = 'N'
             case Direction.BOTTOM:
-                direction = 'D'
+                direction = 'S'
             case Direction.LEFT:
-                direction = 'L'
+                direction = 'E'
             case Direction.RIGHT:
-                direction = 'R'
+                direction = 'W'
         return f"U{self.position.x // settings.SCALING_FACTOR}-{self.position.y // settings.SCALING_FACTOR}-{direction}"

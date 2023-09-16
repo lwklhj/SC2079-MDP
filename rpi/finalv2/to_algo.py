@@ -40,13 +40,17 @@ class algoInterface:
                 # 1024/5 commands
                 message = self.clientSocket.recv(1024)
                 commands = pickle.load(message)
+                
                 if (len(commands) > 0):
                     print("From ALGO:", message)
                 for command in commands:
-                    if(command == "sssss"):
+                    print(command)
+                    if(command[0] == 's'):
                         result = self.RPI.imrec.take_picture()
                         # Send results to Android
                         # self.RPI.android.write(msg)
+                    elif(command[0] == 'U'):
+                        self.RPI.android.write(command)
                     else:
                         self.RPI.stm.send(command)
                         # Give coord to Android
