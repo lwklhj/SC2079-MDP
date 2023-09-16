@@ -30,8 +30,8 @@ class RPI:
         self.algo.connectAlgo()
         #self.imrec.connectImrec()
 rpi = RPI()
-rpi.connect()
-
+#rpi.connect()
+rpi.imrec.take_picture
         
 
 
