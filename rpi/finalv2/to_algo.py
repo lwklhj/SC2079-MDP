@@ -39,6 +39,7 @@ class algoInterface:
             try:
                 # 1024/5 commands
                 message = self.clientSocket.recv(1024)
+                print("hello")
                 commands = pickle.load(message)
                 
                 if (len(commands) > 0):
@@ -103,6 +104,7 @@ class algoInterface:
                     
             except Exception as e:
                 print("Algo Disconnected! (ALGO READ)")
+                print(e)
                 self.connectAlgo()
 
 
