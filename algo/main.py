@@ -94,7 +94,7 @@ def run_minimal(also_run_simulator):
             # Android formatted the data as below
             # Ori,x,y,no,ori2,x2,y2,no2
             obstacle_data.append((int(data[i+1]), int(data[i+2]), int(data[i+3]), int(data[i])))
-            i =+ 4 # Every four strings is an obstacle
+            i += 4 # Every four strings is an obstacle
         obstacles = parse_obstacle_data(obstacle_data)
 
         if also_run_simulator:
