@@ -76,18 +76,23 @@ def run_minimal(also_run_simulator):
     # obstacle_data: list = server.receive_data()
     # server.close()
 
-    data = []
+    #data = []
+    
     while True:
-        d = client.socket.recv(1024)  # 1024 is the buffer size
-        if not d:
-            break
-        print(d)
-        data.append(d)
-
-        obstacle_data: list = pickle.loads(b''.join(data))
+        data = client.socket.recv(4096)  # 1024 is the buffer size
+        data = data.decode() # convert to string
+        
         print("Got data from RPi:")
-        print(obstacle_data)
+        print(data)
 
+        data = data.split(',') # Split on delimiter
+
+        obstacle_data = [] # Array for storing obstacle data
+        
+        i = 0
+        while(i < len(data)):
+            obstacle_data.append((int(data[i]), int(data[i+1]), int(data[i+2]), int(data[i+3])))
+            i =+ 4 # Every four strings is an obstacle
         obstacles = parse_obstacle_data(obstacle_data)
 
         if also_run_simulator:
