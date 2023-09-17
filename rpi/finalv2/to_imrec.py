@@ -15,6 +15,8 @@ class imrecInterface:
         TF_MODEL_FILE_PATH = 'model.tflite' # The default path to the saved TensorFlow Lite model
         self.interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
         self.picam2 = Picamera2()
+        config = self.picam2.still_configuration(main={"size": (180, 180), "format": "BGR888"})
+        self.picam2.configure(config)
     
     # Defunct
     def connectImrec(self):
@@ -79,16 +81,16 @@ class imrecInterface:
         class_names = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40']
 
         self.picam2.start()
-        img_array = self.picam2.capture_array("main")
+        img = self.picam2.capture_image("main")
 
         # Image size
-        img_height = 180
-        img_width = 180
+        # img_height = 180
+        # img_width = 180
 
         #img = tf.keras.utils.load_img(
         #    image_path, target_size=(img_height, img_width)
         #)
-        #img_array = tf.keras.utils.img_to_array(img)
+        img_array = tf.keras.utils.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0) # Create a batch
 
         classify_lite = self.interpreter.get_signature_runner('serving_default')
@@ -100,4 +102,5 @@ class imrecInterface:
         #     "This image most likely belongs to {} with a {:.2f} percent confidence."
         #     .format(class_names[np.argmax(score_lite)], 100 * np.max(score_lite))
 
+        print(class_names[np.argmax(score_lite)])
         return class_names[np.argmax(score_lite)]
