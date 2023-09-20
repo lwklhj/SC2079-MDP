@@ -51,6 +51,7 @@ class Robot:
         string_commands = [command.convert_to_message()
                            for command in self.brain.commands]
         print("Done!")
+        print("Sent over commands in this format: ", (string_commands))
         return string_commands
 
     def turn(self, d_angle, rev):

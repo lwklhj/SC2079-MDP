@@ -76,25 +76,26 @@ def run_minimal(also_run_simulator):
     # obstacle_data: list = server.receive_data()
     # server.close()
 
-    #data = []
-    
+    # data = []
+
     while True:
         data = client.socket.recv(4096)  # 1024 is the buffer size
-        data = data.decode() # convert to string
-        
+        data = data.decode()  # convert to string
+
         print("Got data from RPi:")
         print(data)
 
-        data = data.split(',') # Split on delimiter
+        data = data.split(',')  # Split on delimiter
 
-        obstacle_data = [] # Array for storing obstacle data
-        
+        obstacle_data = []  # Array for storing obstacle data
+
         i = 0
-        while(i < len(data)):
+        while (i < len(data)):
             # Android formatted the data as below
             # Ori,x,y,no,ori2,x2,y2,no2
-            obstacle_data.append((int(data[i]), int(data[i+1]), int(data[i+2]), int(data[i+3])))
-            i += 4 # Every four strings is an obstacle
+            obstacle_data.append(
+                (int(data[i]), int(data[i+1]), int(data[i+2]), int(data[i+3])))
+            i += 4  # Every four strings is an obstacle
         obstacles = parse_obstacle_data(obstacle_data)
 
         if also_run_simulator:
@@ -150,5 +151,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    run_minimal(False)
+    run_minimal(True)
     # run_simulator()
