@@ -59,7 +59,7 @@ class androidInterface:
                     self.RPI.algo.write(message)
             except Exception as e:
                 print("Android Disconnected! (Android READ)")
-                self.connectAlgo()
+                self.connectAndroid()
 
 
 

@@ -47,16 +47,21 @@ class algoInterface:
                     print(command)
                     if(command[0] == 's'):
                         print("Send image")
-                        # result = self.RPI.imrec.take_picture()
+                        self.RPI.android.write(f"[ROBOT, '{command}']")
+                        result = self.RPI.imrec.take_picture()
                         # Send results to Android
-                        # self.RPI.android.write(msg)
-                    elif(command[0] == 'U'):
-                        print("Send android update command")
-                        #self.RPI.android.write(command)
+                        self.RPI.android.write(f"[TARGET, {int(command[1:])}, {result}]")
+                    #elif(command[0] == 'U'):
+                    #    print("Send android update command")
+                    #    #self.RPI.android.write(command)
                     else:
                         self.RPI.stm.send(command)
-                        # Give coord to Android
-                        # self.RPI.android.write(msg)
+                        try:
+                            next_command = commands.next()
+                            # Give coord to Android
+                            self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
+                        except StopIteration:
+                            break
 
 
                 # message = self.clientSocket.recv(1024)

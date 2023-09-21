@@ -26,12 +26,11 @@ class RPI:
         self.imrec = imrecInterface(self)
 
     def connect(self):
-        #self.android.connectAndroid()
-        self.algo.connectAlgo()
+        threading.Thread(target = self.android.connectAndroid).start()
+        threading.Thread(target = self.algo.connectAlgo).start()
         #self.imrec.connectImrec()
 rpi = RPI()
-#rpi.connect()
-print(rpi.imrec.take_picture)
+rpi.connect()
         
 
 
