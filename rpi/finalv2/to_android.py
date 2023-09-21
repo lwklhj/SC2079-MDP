@@ -56,7 +56,23 @@ class androidInterface:
                 #Android only sends to algo
                 if message:
                     print('From ANDROID:', message)
-                    self.RPI.algo.write(message)
+                    # Movement
+                    if(message == "Up"):
+                        self.RPI.stm.send("f0010") 
+                    elif(message == "Down"):
+                        self.RPI.stm.send("b0010")
+                    elif(message == "Left"):
+                        self.RPI.stm.send("l0090")
+                    elif(message == "Right"):
+                        self.RPI.stm.send("r0090")
+                    elif(message == "Fastest path"):
+                        return
+                    # Obstacle data commands
+                    elif(message == "Start"):
+                        self.RPI.algo.write(self.stored_commands)
+                    else:
+                        self.stored_commands = message
+                        #self.RPI.algo.write(message)
             except Exception as e:
                 print("Android Disconnected! (Android READ)")
                 self.connectAndroid()
