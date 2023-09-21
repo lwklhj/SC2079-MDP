@@ -50,6 +50,7 @@ class Robot:
         print("Converting commands to string...", end="")
         string_commands = [command.convert_to_message()
                            for command in self.brain.commands]
+        string_commands.insert(0, "ROBOT")
         print("Done!")
         print("Sent over commands in this format: ", (string_commands))
         return string_commands

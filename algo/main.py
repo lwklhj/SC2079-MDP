@@ -40,6 +40,7 @@ def run_simulator():
     app = AlgoSimulator(obs)
     app.init()
     app.execute()
+    app.robot.convert_all_commands()
 
 
 def run_minimal(also_run_simulator):
@@ -151,5 +152,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    run_minimal(True)
-    # run_simulator()
+    # run_minimal(True)
+    run_simulator()
