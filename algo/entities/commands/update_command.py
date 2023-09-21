@@ -4,6 +4,8 @@ from entities.commands.command import Command
 from entities.grid.position import Position, RobotPosition
 
 # UPDATE COMMAND ONLY FOR ANDROID
+
+
 class UpdateCommand(Command):
     def __init__(self, position: Position):
         super().__init__(0)
@@ -23,16 +25,16 @@ class UpdateCommand(Command):
 
     def apply_on_pos(self, curr_pos):
         pass
-    
+
     def convert_to_message(self):
-        
+
         match self.position.direction:
             case Direction.TOP:
                 direction = 'N'
             case Direction.BOTTOM:
                 direction = 'S'
             case Direction.LEFT:
-                direction = 'E'
-            case Direction.RIGHT:
                 direction = 'W'
+            case Direction.RIGHT:
+                direction = 'E'
         return f"U{self.position.x // settings.SCALING_FACTOR}-{self.position.y // settings.SCALING_FACTOR}-{direction}"

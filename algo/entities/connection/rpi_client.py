@@ -6,6 +6,7 @@ class RPiClient:
     """
     Used for connecting to...
     """
+
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -15,7 +16,9 @@ class RPiClient:
         self.socket.connect((self.host, self.port))
 
     def send_message(self, obj):
+        print("sending")
         self.socket.sendall(pickle.dumps(obj))
+        print("Sent")
 
     def close(self):
         self.socket.close()

@@ -19,10 +19,10 @@ class Robot:
         # To set the starting position of the robot, change the values in the RobotPosition constructor.
         # There is a scaling factor for x and y coordinates accordings to SCALING_FACTOR in settings.py.
         self.pos = RobotPosition(
-            # settings.ROBOT_SAFETY_DISTANCE,
-            # settings.ROBOT_SAFETY_DISTANCE,
-            55 * settings.SCALING_FACTOR,
-            15 * settings.SCALING_FACTOR,
+            settings.ROBOT_SAFETY_DISTANCE,
+            settings.ROBOT_SAFETY_DISTANCE,
+            # 55 * settings.SCALING_FACTOR,
+            # 15 * settings.SCALING_FACTOR,
             Direction.TOP,
             90
         )
@@ -50,7 +50,9 @@ class Robot:
         print("Converting commands to string...", end="")
         string_commands = [command.convert_to_message()
                            for command in self.brain.commands]
+        string_commands.insert(0, "ROBOT")
         print("Done!")
+        print("Sent over commands in this format: ", (string_commands))
         return string_commands
 
     def turn(self, d_angle, rev):
