@@ -22,19 +22,18 @@ class STMInterface:
         if(not cmd[0].isdigit()):
             opcode = cmd[0]
             operands = cmd[1:]
-            match opcode:
-                case "l":
-                    converted_opcode = "02"
-                case 'r':
-                    converted_opcode = "03"
-                case "L":
-                    converted_opcode = "12"
-                case 'R':
-                    converted_opcode = "13"
-                case "f":
-                    converted_opcode = "01"
-                case 'b':
-                    converted_opcode = "11"
+            if opcode == "l":
+                converted_opcode = "02"
+            elif opcode == 'r':
+                converted_opcode = "03"
+            elif opcode == "L":
+                converted_opcode = "12"
+            elif opcode == 'R':
+                converted_opcode = "13"
+            elif opcode == "f":
+                converted_opcode = "01"
+            elif opcode == 'b':
+                converted_opcode = "11"
 
             sc = converted_opcode + operands
             sc = str.encode(cmd)
