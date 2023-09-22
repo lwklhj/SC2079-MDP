@@ -23,7 +23,7 @@ class androidInterface:
         self.serverSocket.listen(1)
         bluetooth.advertise_service(
                 self.serverSocket, 
-                'MDP-Team6',
+                'MDP-Team20',
                 service_id=self.UUID,
                 service_classes=[self.UUID, bluetooth.SERIAL_PORT_CLASS],
                 profiles=[bluetooth.SERIAL_PORT_PROFILE]
@@ -57,16 +57,16 @@ class androidInterface:
                 if message:
                     print('From ANDROID:', message)
                     # Movement
-                    # if(message == "Up"):
-                    #     self.RPI.stm.send("f0010") 
-                    # elif(message == "Down"):
-                    #     self.RPI.stm.send("b0010")
-                    # elif(message == "Left"):
-                    #     self.RPI.stm.send("l0090")
-                    # elif(message == "Right"):
-                    #     self.RPI.stm.send("r0090")
-                    if(len(message) == 5):
-                        self.RPI.stm.send(message)
+                    if(message == "f"):
+                        self.RPI.stm.send("f0010") 
+                    elif(message == "r"):
+                        self.RPI.stm.send("b0010")
+                    elif(message == "sl"):
+                        self.RPI.stm.send("l0090")
+                    elif(message == "sr"):
+                        self.RPI.stm.send("r0090")
+                    #if(len(message) == 5):
+                    #    self.RPI.stm.send(message)
                     elif(message == "path"):
                         return
                     # Obstacle data commands
