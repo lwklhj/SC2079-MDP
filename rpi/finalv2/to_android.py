@@ -23,7 +23,7 @@ class androidInterface:
         self.serverSocket.listen(1)
         bluetooth.advertise_service(
                 self.serverSocket, 
-                'MDP-Team20',
+                'MDP-Team6',
                 service_id=self.UUID,
                 service_classes=[self.UUID, bluetooth.SERIAL_PORT_CLASS],
                 profiles=[bluetooth.SERIAL_PORT_PROFILE]
@@ -65,14 +65,14 @@ class androidInterface:
                         self.RPI.stm.send("l0090")
                     elif(message == "Right"):
                         self.RPI.stm.send("r0090")
-                    elif(message == "Fastest path"):
+                    elif(message == "path"):
                         return
                     # Obstacle data commands
-                    elif(message == "Start"):
-                        self.RPI.algo.write(self.stored_commands)
+                    #elif(message == "Start"):
+                    #    self.RPI.algo.write(self.stored_commands)
                     else:
-                        self.stored_commands = message
-                        #self.RPI.algo.write(message)
+                        #self.stored_commands = message
+                        self.RPI.algo.write(message)
             except Exception as e:
                 print("Android Disconnected! (Android READ)")
                 self.connectAndroid()
