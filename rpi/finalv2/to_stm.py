@@ -16,11 +16,29 @@ class STMInterface:
                 print("Failed to connect to STM")
     def send(self,cmd):
         # Testing purpose
-        time.sleep(100)
-        return
     
         print(f"Sending Commands to STM: {cmd}")
-        sc = str.encode(cmd)
+
+        if(not cmd[0].isdigit()):
+            opcode = cmd[0]
+            operands = cmd[1:]
+            match opcode:
+                case "l":
+                    converted_opcode = "02"
+                case 'r':
+                    converted_opcode = "03"
+                case "L":
+                    converted_opcode = "12"
+                case 'R':
+                    converted_opcode = "13"
+                case "f":
+                    converted_opcode = "01"
+                case 'b':
+                    converted_opcode = "11"
+
+            sc = converted_opcode + operands
+            sc = str.encode(cmd)
+
         self.ser.write(sc)
         self.ser.flushInput()
         

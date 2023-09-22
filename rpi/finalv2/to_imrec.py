@@ -15,7 +15,7 @@ class imrecInterface:
         TF_MODEL_FILE_PATH = 'model.tflite' # The default path to the saved TensorFlow Lite model
         self.interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
         self.picam2 = Picamera2()
-        config = self.picam2.still_configuration(main={"size": (180, 180), "format": "BGR888"})
+        config = self.picam2.create_still_configuration(main={"size": (180, 180), "format": "BGR888"})
         self.picam2.configure(config)
     
     # Defunct
