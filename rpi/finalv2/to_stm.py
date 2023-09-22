@@ -34,11 +34,9 @@ class STMInterface:
             elif opcode == 'b':
                 converted_opcode = "11"
 
-            sc = converted_opcode + operands
-            sc = str.encode(cmd)
-            print(sc)
-
-
+            cmd = converted_opcode + operands
+            
+        sc = str.encode(cmd)
         self.ser.write(sc)
         self.ser.flushInput()
         
