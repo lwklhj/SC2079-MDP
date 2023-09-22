@@ -36,6 +36,8 @@ class STMInterface:
 
             sc = converted_opcode + operands
             sc = str.encode(cmd)
+            print(sc)
+
 
         self.ser.write(sc)
         self.ser.flushInput()
