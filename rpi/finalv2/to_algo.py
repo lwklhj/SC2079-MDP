@@ -43,7 +43,9 @@ class algoInterface:
                 
                 if (len(commands) > 0):
                     print("From ALGO:", commands)
-                for command in commands:
+                i = 0
+                while(i < len(commands)):
+                    command = commands[i]
                     print(command)
                     if(command[0] == 's'):
                         print("Send image")
@@ -57,11 +59,13 @@ class algoInterface:
                     else:
                         self.RPI.stm.send(command)
                         try:
-                            next_command = commands.next()
+                            next_command = commands[i+1]
                             # Give coord to Android
                             self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
+                            i += 1
                         except StopIteration:
                             break
+                    i += 1
 
 
                 # message = self.clientSocket.recv(1024)

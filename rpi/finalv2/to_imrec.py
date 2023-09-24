@@ -95,7 +95,7 @@ class imrecInterface:
 
         classify_lite = self.interpreter.get_signature_runner('serving_default')
 
-        predictions_lite = classify_lite(rescaling_3_input=img_array)['dense_4']
+        predictions_lite = classify_lite(rescaling_2_input=img_array)['dense_1']
         score_lite = tf.nn.softmax(predictions_lite)
 
         # print(

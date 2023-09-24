@@ -36,21 +36,19 @@ class STMInterface:
 
             cmd = converted_opcode + operands
             
+        print(cmd)
         sc = str.encode(cmd)
         self.ser.write(sc)
         self.ser.flushInput()
-        
+        print(cmd)
         # Our STM sends two KKs , one when receive command, one when command fully excecuted
-        first_k = False
         while True:
             try:
-                s = self.ser.read().rstrip()
-                s = s.lstrip()
-                if s.decode() == 'K':
-                    if(first_k):
-                        print(s.decode())
-                        break
-                    first_k = True
+                s = self.ser.read().decode().rstrip().lstrip()
+                print(s)
+                if(s == "KK"):
+                    break
+                    
             except:
                 print("Failed to send command to STM!")
                 break
