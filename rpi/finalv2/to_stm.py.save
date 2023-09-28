@@ -1,0 +1,45 @@
+import serial
+import time
+
+class STMInterface:
+    def __init__(self,RPI):
+        self.RPI = RPI
+        try:
+            self.ser = serial.Serial('/dev/ttyUSB0', baudrate=115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=3)
+            print("Connected to STM via USB 0")
+        except:
+            try:
+                self.ser = serial.Serial('/dev/ttyUSB1', baudrate=115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=3)
+                print("Connected to STM via USB 1")
+            except Exception as e2:
+                print("Failed to connect to STM")
+    def send(self,cmd):
+        # Testing purpose
+    
+        print(f"Sending Commands to STM: {cmd}")
+
+        if(not cmd[0].isdigit()):
+            opcode = cmd[0]
+            operands = cmd[1:]
+
+            cmd = converted_opcode + operands
+            
+        print(cmd)
+        sc = str.encode(cmd)
+        self.ser.write(sc)
+        self.ser.flushInput()
+        print(cmd)
+        # Our STM sends two KKs , one when receive command, one when command fully excecuted
+        while True:
+            try:
+                s = self.ser.read().decode().rstrip().lstrip()
+                print(s)
+                if(s == "KK"):
+                    break
+                    
+            except:
+                print("Failed to send command to STM!")
+                break
+
+#stmTest = STMInterface()
+#stmTest.send('L')

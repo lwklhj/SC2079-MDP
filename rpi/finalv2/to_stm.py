@@ -64,23 +64,27 @@ class STMInterface:
             cmd_header = "".join(cmd[0:2])
             print("this is the cmd_header:", cmd_header)
             cmd = cmd_header + str(cmd_num)
+            cmd=cmd.lstrip()
         else:
             cmd_header = "".join(cmd[0:2])
             cmd = cmd_header+"00"
+            cmd=cmd.lstrip()
             print("cd_header for fr/fl/br/bl"+cmd)
 
         #cmd = "".join(cmd)
         print(f"Sending Commands to STM: {cmd}")
         print(cmd) 
-        sc = str.encode(cmd)
+        sc = cmd.encode()
         self.ser.write(sc)
+        print("I have sent over to STM")
         self.ser.flushInput()
         print(cmd)
         # Our STM sends two KKs , one when receive command, one when command fully excecuted
         while True:
             try:
-                s = self.ser.read(3).decode().rstrip().lstrip()
+                s = self.ser.read(6).decode().rstrip().lstrip()
                 print(s)
+                print("help me")
                 if(s == "ACK"):
                     break
                     
