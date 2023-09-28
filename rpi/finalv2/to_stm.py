@@ -15,28 +15,63 @@ class STMInterface:
                 print("Failed to connect to STM")
     def send(self,cmd):
         # Testing purpose
-    
+        cmd = list(cmd)
+        """if cmd[0] == "f":
+            cmd[0] = 'S'
+            cmd[1] = 'F'
+        elif cmd[0] == "b":
+            cmd[0] = 'S'
+            cmd[1] = 'B'
+        elif cmd[0] == "L":
+            cmd[0] = 'L'
+            cmd[1] = 'B'
+        elif cmd[0] == "l":
+            cmd[0] = 'L'
+            cmd[1] = 'F'
+        elif cmd[0] == "R":
+            cmd[0] = 'R'
+            cmd[1] = 'B'
+        elif cmd[0] == "r":
+            cmd[0] = 'R'
+            cmd[1] = 'F'"""
+        flag = 0;
+        if cmd[0] == "f":
+            cmd[0] = 'F'
+            cmd[1] = 'W'
+        elif cmd[0] == "b":
+            cmd[0] = 'B'
+            cmd[1] = 'W'
+        elif cmd[0] == "L":
+            cmd[0] = 'B'
+            cmd[1] = 'L'
+            flag = 1
+        elif cmd[0] == "l":
+            cmd[0] = 'F'
+            cmd[1] = 'L'
+            flag = 1
+        elif cmd[0] == "R":
+            cmd[0] = 'B'
+            cmd[1] = 'R'
+            flag = 1
+        elif cmd[0] == "r":
+            cmd[0] = 'F'
+            cmd[1] = 'R'
+            flag = 1
+
+        if (flag == 0):
+            cmd_num = int("".join(cmd[2:]))
+            print("This is the cmd_numb:", cmd_num)
+            cmd_header = "".join(cmd[0:2])
+            print("this is the cmd_header:", cmd_header)
+            cmd = cmd_header + str(cmd_num)
+        else:
+            cmd_header = "".join(cmd[0:2])
+            cmd = cmd_header+"00"
+            print("cd_header for fr/fl/br/bl"+cmd)
+
+        #cmd = "".join(cmd)
         print(f"Sending Commands to STM: {cmd}")
-
-        if(not cmd[0].isdigit()):
-            opcode = cmd[0]
-            operands = cmd[1:]
-            if opcode == "l":
-                converted_opcode = "02"
-            elif opcode == 'r':
-                converted_opcode = "03"
-            elif opcode == "L":
-                converted_opcode = "12"
-            elif opcode == 'R':
-                converted_opcode = "13"
-            elif opcode == "f":
-                converted_opcode = "01"
-            elif opcode == 'b':
-                converted_opcode = "11"
-
-            cmd = converted_opcode + operands
-            
-        print(cmd)
+        print(cmd) 
         sc = str.encode(cmd)
         self.ser.write(sc)
         self.ser.flushInput()
@@ -44,9 +79,9 @@ class STMInterface:
         # Our STM sends two KKs , one when receive command, one when command fully excecuted
         while True:
             try:
-                s = self.ser.read().decode().rstrip().lstrip()
+                s = self.ser.read(3).decode().rstrip().lstrip()
                 print(s)
-                if(s == "KK"):
+                if(s == "ACK"):
                     break
                     
             except:

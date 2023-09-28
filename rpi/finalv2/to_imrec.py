@@ -1,3 +1,4 @@
+
 #import cv2
 #import imagezmq
 import socket
@@ -69,9 +70,12 @@ class imrecInterface:
             
 
     def take_picture(self):        
+        class_names = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40','Back']
+
         self.picam2.start()
         img = self.picam2.capture_array("main")
-        results = self.model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True)
+        print(img)
+        results = self.model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True, project = "/home/pi/SC2079-MDP/rpi/finalv2")
         classes = results[0].names
 
         for file in os.listdir(results[0].save_dir+'/labels'):
@@ -81,6 +85,7 @@ class imrecInterface:
                     if lines:
                         first_integer = int(lines[0].split()[0])
                         print("Detected image:", classes[first_integer])
+        # print(results[0].save_dir)
         # for file in os.listdir(results[0].save_dir+'/labels'):
         #     if file.endswith('.txt'):
         #         print(file)

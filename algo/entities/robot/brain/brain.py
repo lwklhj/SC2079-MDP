@@ -94,7 +94,7 @@ class Brain:
                     settings.ROBOT_SCAN_TIME, obstacle.index))
 
         print("Before compression:", self.commands)
-        self.compress_paths()
+        # self.compress_paths()
         print("After compression:", self.commands)
         self.add_update_commands()
         print("After adding update commands:", self.commands)
