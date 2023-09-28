@@ -14,10 +14,10 @@ class imrecInterface:
         # self.clientSocket = socket.socket()
         # self.sender = None
         # self.attempts = 0
-        TF_MODEL_FILE_PATH = 'yolov8n.pt' # The default path to the saved TensorFlow Lite model
+        TF_MODEL_FILE_PATH = 'best.pt' # The default path to the saved TensorFlow Lite model
         self.model = YOLO(TF_MODEL_FILE_PATH)
         self.picam2 = Picamera2()
-        config = self.picam2.create_still_configuration(main={"size": (640, 640), "format": "BGR888"})
+        config = self.picam2.create_still_configuration(main={"size": (640, 640), "format": "RGB888"})
         self.picam2.configure(config)
         self.i = 0
     
@@ -69,13 +69,18 @@ class imrecInterface:
             
 
     def take_picture(self):        
-        class_names = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40']
-
         self.picam2.start()
         img = self.picam2.capture_array("main")
         results = self.model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True)
+        classes = results[0].names
 
-        print(results[0].save_dir)
+        for file in os.listdir(results[0].save_dir+'/labels'):
+            if file.endswith('.txt'):
+                with open(results[0].save_dir+'/labels/'+file, 'r') as f:
+                    lines = f.readlines()
+                    if lines:
+                        first_integer = int(lines[0].split()[0])
+                        print("Detected image:", classes[first_integer])
         # for file in os.listdir(results[0].save_dir+'/labels'):
         #     if file.endswith('.txt'):
         #         print(file)
