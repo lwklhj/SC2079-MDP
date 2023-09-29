@@ -18,7 +18,7 @@ class imrecInterface:
         TF_MODEL_FILE_PATH = 'best.pt' # The default path to the saved TensorFlow Lite model
         self.model = YOLO(TF_MODEL_FILE_PATH)
         self.picam2 = Picamera2()
-        config = self.picam2.create_still_configuration(main={"size": (640, 640), "format": "RGB888"})
+        config = self.picam2.create_still_configuration(main={"format": "RGB888"})
         self.picam2.configure(config)
         self.i = 0
     

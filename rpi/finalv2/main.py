@@ -41,6 +41,6 @@ class RPI:
         # self.imrec.connectImrec()
 rpi = RPI()
 # rpi.connect()
-# rpi.bullseye.start()
+rpi.bullseye.start()
 # rpi.imrec.take_picture()
-rpi.testfile.start()
+#rpi.testfile.start()
