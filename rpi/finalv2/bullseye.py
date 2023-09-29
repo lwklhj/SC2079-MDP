@@ -8,7 +8,7 @@ class bullseyeInterface:
         result = self.RPI.imrec.take_picture()
         count = 1
 
-        while(result == "back" and count!=4):
+        while(result == "Back" and count!=4):
                 self.RPI.stm.send("b0030")
                 self.RPI.stm.send("r0090")
                 self.RPI.stm.send("f0010")

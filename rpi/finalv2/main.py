@@ -35,7 +35,7 @@ class RPI:
         #self.imrec.connectImrec()
 rpi = RPI()
 # rpi.connect()
-rpi.bullseye()
+rpi.bullseye.start()
 #rpi.imrec.take_picture()
 
 

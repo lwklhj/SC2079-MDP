@@ -74,10 +74,10 @@ class imrecInterface:
 
         self.picam2.start()
         img = self.picam2.capture_array("main")
-        print(img)
         results = self.model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True, project = "/home/pi/SC2079-MDP/rpi/finalv2")
         classes = results[0].names
-
+        print(classes)
+        
         for file in os.listdir(results[0].save_dir+'/labels'):
             if file.endswith('.txt'):
                 with open(results[0].save_dir+'/labels/'+file, 'r') as f:
@@ -99,4 +99,4 @@ class imrecInterface:
 
         # print(class_names[np.argmax(score_lite)])
         # return class_names[np.argmax(score_lite)]
-        return 0
+        return classes[first_integer]

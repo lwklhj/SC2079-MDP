@@ -74,8 +74,7 @@ class STMInterface:
         #cmd = "".join(cmd)
         print(f"Sending Commands to STM: {cmd}")
         print(cmd) 
-        self.ser.write(cmd.encode())
-        self.ser.write("\r\n".encode());
+        self.ser.write((cmd+'\r').encode())
         print("I have sent over to STM")
         self.ser.flushInput()
         print(len(cmd))
@@ -83,10 +82,9 @@ class STMInterface:
         while True:
             try:
                 s = self.ser.read(6).decode().rstrip().lstrip()
-                print(s)
                 print("help me")
                 if(s[0:3] == "ACK"):
-                    continue
+                    break
                     
             except:
                 print("Failed to send command to STM!")
