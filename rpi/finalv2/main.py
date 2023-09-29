@@ -1,11 +1,12 @@
 import os
 import bluetooth
 import threading
-from to_algo import*
-from to_imrec import*
-from to_android import*
-from to_stm import*
-from bullseye import*
+from to_algo import *
+from to_imrec import *
+from to_android import *
+from to_stm import *
+from bullseye import *
+from testfile import *
 import socket
 
 
@@ -26,20 +27,20 @@ class RPI:
         # initialise imrec interface
         self.imrec = imrecInterface(self)
 
-        #initialise bullseye
+        # initialise bullseye
         self.bullseye = bullseyeInterface(self)
 
+        # initialise test
+        self.testfile = testInterface(self)
+
     def connect(self):
-        threading.Thread(target = self.android.connectAndroid).start()
-        threading.Thread(target = self.algo.connectAlgo).start()
-        #self.imrec.connectImrec()
+        threading.Thread(target=self.android.connectAndroid).start()
+        threading.Thread(target=self.algo.connectAlgo).start()
+
+
+        # self.imrec.connectImrec()
 rpi = RPI()
 # rpi.connect()
-rpi.bullseye.start()
-#rpi.imrec.take_picture()
-
-
-        
-
-
-
+# rpi.bullseye.start()
+# rpi.imrec.take_picture()
+rpi.testfile.start()
