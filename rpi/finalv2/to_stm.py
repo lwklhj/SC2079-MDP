@@ -75,6 +75,7 @@ class STMInterface:
         print(f"Sending Commands to STM: {cmd}")
         print(cmd) 
         self.ser.write(cmd.encode())
+        self.ser.write("\r\n".encode());
         print("I have sent over to STM")
         self.ser.flushInput()
         print(len(cmd))
