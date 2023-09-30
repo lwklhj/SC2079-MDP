@@ -9,6 +9,10 @@ from entities.assets.direction import Direction
 from entities.connection.rpi_client import RPiClient
 from entities.connection.rpi_server import RPiServer
 from entities.grid.obstacle import Obstacle
+from ultralytics import YOLO
+import base64
+import threading
+import os
 
 
 def parse_obstacle_data(data) -> List[Obstacle]:
@@ -85,33 +89,58 @@ def run_minimal(also_run_simulator):
 
         print("Got data from RPi:")
         print(data)
+        # Check if image
+        if(data.split('|')[0] == "img"):
+            try:
+                index = data.split('|')[0][4:-1]
+                img = pickle.loads(base64.b64decode(data.split(':')[1]))
+                # Load Model
+                MODEL_FILE_PATH = 'best.pt'
+                model = YOLO(MODEL_FILE_PATH)
+                # Start imrec
+                results = model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True, project = "/home/pi/SC2079-MDP/rpi/finalv2")
+                classes = results[0].names
+                for file in os.listdir(results[0].save_dir+'/labels'):
+                    if file.endswith('.txt'):
+                        with open(results[0].save_dir+'/labels/'+file, 'r') as f:
+                            lines = f.readlines()
+                            if lines:
+                                first_integer = int(lines[0].split()[0])
+                                print("Detected image:", classes[first_integer])
+                class_names = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40','Back']
+                # Send result back
+                client.send_message(f"imgID|{index}|{classes[first_integer]}")
+            except Exception as e:
+                print("IMAGE RECOGNITION ERROR: ", e)
 
-        data = data.split(',')  # Split on delimiter
+        else:
+            data = data.split(',')  # Split on delimiter
 
-        obstacle_data = []  # Array for storing obstacle data
+            obstacle_data = []  # Array for storing obstacle data
 
-        i = 0
-        while (i < len(data)):
-            # Android formatted the data as below
-            # Ori,x,y,no,ori2,x2,y2,no2
-            obstacle_data.append(
-                (int(data[i]), int(data[i+1]), int(data[i+2]), int(data[i+3])))
-            i += 4  # Every four strings is an obstacle
-        obstacles = parse_obstacle_data(obstacle_data)
+            i = 0
+            while (i < len(data)):
+                # Android formatted the data as below
+                # Ori,x,y,no,ori2,x2,y2,no2
+                obstacle_data.append(
+                    (int(data[i]), int(data[i+1]), int(data[i+2]), int(data[i+3])))
+                i += 4  # Every four strings is an obstacle
+            obstacles = parse_obstacle_data(obstacle_data)
 
-        if also_run_simulator:
-            app = AlgoSimulator(obstacles)
+            if also_run_simulator:
+                app = AlgoSimulator(obstacles)
+                app.init()
+                threading.Thread(target=app.execute).start()
+                
+
+            app = AlgoMinimal(obstacles)
             app.init()
             app.execute()
 
-        app = AlgoMinimal(obstacles)
-        app.init()
-        app.execute()
-
-        # Send the list of commands over.
-        print("Sending list of commands to RPi...")
-        commands = app.robot.convert_all_commands()
-        client.send_message(commands)
+            # Send the list of commands over.
+            print("Sending list of commands to RPi...")
+            commands = app.robot.convert_all_commands()
+            client.send_message(commands)
     client.close()
 
     # obstacle_data: list = client.receive()

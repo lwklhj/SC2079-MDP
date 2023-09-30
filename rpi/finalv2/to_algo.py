@@ -43,29 +43,33 @@ class algoInterface:
                 
                 if (len(commands) > 0):
                     print("From ALGO:", commands)
-                i = 0
-                while(i < len(commands)):
-                    command = commands[i]
-                    print(command)
-                    if(command[0] == 's'):
-                        print("Send image")
-                        self.RPI.android.write(f"[ROBOT, '{command}']")
-                        result = self.RPI.imrec.take_picture()
-                        # Send results to Android
-                        self.RPI.android.write(f"[TARGET, {int(command[1:])}, {result}]")
-                    #elif(command[0] == 'U'):
-                    #    print("Send android update command")
-                    #    #self.RPI.android.write(command)
-                    else:
-                        self.RPI.stm.send(command)
-                        try:
-                            next_command = commands[i+1]
-                            # Give coord to Android
-                            self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
-                            i += 1
-                        except StopIteration:
-                            break
-                    i += 1
+                if commands.split("|")[0] == "imgID":
+                    data = commands.split("|")
+                    self.RPI.android.write(f"[TARGET, {data[1]}, {data[2]}]")
+                else:
+                    i = 0
+                    while(i < len(commands)):
+                        command = commands[i]
+                        print(command)
+                        if(command[0] == 's'):
+                            print("Send image")
+                            self.RPI.android.write(f"[ROBOT, '{command}']")
+                            result = self.RPI.imrec.take_picture(int(command[1:]))
+                            # Send results to Android
+                            #self.RPI.android.write(f"[TARGET, {int(command[1:])}, {result}]")
+                        #elif(command[0] == 'U'):
+                        #    print("Send android update command")
+                        #    #self.RPI.android.write(command)
+                        else:
+                            self.RPI.stm.send(command)
+                            try:
+                                next_command = commands[i+1]
+                                # Give coord to Android
+                                self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
+                                i += 1
+                            except StopIteration:
+                                break
+                        i += 1
 
 
                 # message = self.clientSocket.recv(1024)
