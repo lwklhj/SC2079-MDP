@@ -32,14 +32,8 @@ def parse_obstacle_data(data) -> List[Obstacle]:
 def run_simulator():
     # Fill in obstacle positions with respect to lower bottom left corner.
     # (x-coordinate, y-coordinate, Direction)
-    obstacles = [
-        [105, 75, 180, 0],
-        [135, 25, 0, 1],
-        [195, 95, 180, 2],
-        [175, 185, -90, 3],
-        [75, 125, 90, 4],
-        [15, 195, -90, 5]
-    ]
+    obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
+                 [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
     obs = parse_obstacle_data(obstacles)
     app = AlgoSimulator(obs)
     app.init()
@@ -84,13 +78,13 @@ def run_minimal(also_run_simulator):
     # data = []
 
     while True:
-        data = client.socket.recv(4096)  # 1024 is the buffer size
+        data = client.socket.recv(40960000)  # 40960000 is the buffer size
         data = data.decode()  # convert to string
 
         print("Got data from RPi:")
-        print(data)
+        # print(data)
         # Check if image
-        if(data.split('|')[0] == "img"):
+        if (data.split('|')[0] == "img"):
             try:
                 index = data.split('|')[0][4:-1]
                 img = pickle.loads(base64.b64decode(data.split(':')[1]))
@@ -98,7 +92,8 @@ def run_minimal(also_run_simulator):
                 MODEL_FILE_PATH = 'best.pt'
                 model = YOLO(MODEL_FILE_PATH)
                 # Start imrec
-                results = model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True, project = "/home/pi/SC2079-MDP/rpi/finalv2")
+                results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
+                                        save_conf=True, project="/Users/jordan/Documents/Github/SC2079-MDP/algo")
                 classes = results[0].names
                 for file in os.listdir(results[0].save_dir+'/labels'):
                     if file.endswith('.txt'):
@@ -106,8 +101,8 @@ def run_minimal(also_run_simulator):
                             lines = f.readlines()
                             if lines:
                                 first_integer = int(lines[0].split()[0])
-                                print("Detected image:", classes[first_integer])
-                class_names = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40','Back']
+                                print("Detected image:",
+                                      classes[first_integer])
                 # Send result back
                 client.send_message(f"imgID|{index}|{classes[first_integer]}")
             except Exception as e:
@@ -131,7 +126,6 @@ def run_minimal(also_run_simulator):
                 app = AlgoSimulator(obstacles)
                 app.init()
                 threading.Thread(target=app.execute).start()
-                
 
             app = AlgoMinimal(obstacles)
             app.init()
@@ -181,5 +175,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    # run_minimal(True)
-    run_simulator()
+    run_minimal(False)
+    # run_simulator()

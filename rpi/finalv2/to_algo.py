@@ -1,4 +1,3 @@
-
 import socket
 import threading
 import time
@@ -27,7 +26,7 @@ class algoInterface:
         try:
             message = message + '\n'
             self.clientSocket.send(bytes(message,"utf-8"))
-            print("Sent to Algo: ", message)
+            # print("Sent to Algo: ", message)
         except Exception as e:
             print("Algo Disconnected! (ALGO WRITE)")
             self.connectAlgo()
@@ -38,12 +37,12 @@ class algoInterface:
         while True:
             try:
                 # 1024/5 commands
-                message = self.clientSocket.recv(1024)
+                message = self.clientSocket.recv(4096)
                 commands = pickle.loads(message)
                 
                 if (len(commands) > 0):
                     print("From ALGO:", commands)
-                if commands.split("|")[0] == "imgID":
+                if (type(commands) is str):
                     data = commands.split("|")
                     self.RPI.android.write(f"[TARGET, {data[1]}, {data[2]}]")
                 else:
