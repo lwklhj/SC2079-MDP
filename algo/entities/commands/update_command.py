@@ -10,7 +10,7 @@ class UpdateCommand(Command):
     def __init__(self, position: Position):
         super().__init__(0)
         self.position = position
-        print(self.position)
+        #print(self.position)
 
     def __str__(self):
         return str(self.position)

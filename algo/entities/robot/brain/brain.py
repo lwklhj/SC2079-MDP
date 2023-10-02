@@ -63,6 +63,8 @@ class Brain:
             if isinstance(command, StraightCommand):
                 new_length = 0
                 while index < len(self.commands) and isinstance(self.commands[index], StraightCommand):
+                    if new_length >= 90 * settings.SCALING_FACTOR or new_length <= -90 * settings.SCALING_FACTOR:
+                        break
                     new_length += self.commands[index].dist
                     index += 1
                 command = StraightCommand(new_length)
@@ -71,6 +73,7 @@ class Brain:
                 new_commands.append(command)
                 index += 1
         self.commands = new_commands
+
         print("Done!")
 
     def plan_path(self):
@@ -94,7 +97,7 @@ class Brain:
                     settings.ROBOT_SCAN_TIME, obstacle.index))
 
         print("Before compression:", self.commands)
-        # self.compress_paths()
+        self.compress_paths()
         print("After compression:", self.commands)
         self.add_update_commands()
         print("After adding update commands:", self.commands)
@@ -106,10 +109,10 @@ class Brain:
         i = 0
         while i < len(self.commands):
             command = self.commands[i]
-            if(isinstance(command, ScanCommand)):
-                i+=1
+            if (isinstance(command, ScanCommand)):
+                i += 1
             else:
                 command.apply_on_pos(self.curr)
                 # Remember to copy the pos
                 self.commands.insert(i+1, UpdateCommand(self.curr.copy()))
-                i+=2
+                i += 2
