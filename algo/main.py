@@ -78,17 +78,15 @@ def run_minimal(also_run_simulator):
     buffer = []
     while True:
         received = client.socket.recv(4096)  # 4096 is the buffer size
-
+        buffer.append(received)
+        # Join bytes into byte string
+        data = b''.join(buffer)
+        data = data.decode()
         # No more incoming bytes
         # Start operations
-        if not received:
-            # Join bytes into byte string
-            data = b''.join(buffer)
-            data = data.decode()
-
+        if "!" in data:
             # Reset buffer
             buffer.clear()
-
             if (data.split('|')[0] == "img"):
                 try:
                     index = data.split('|')[1]
@@ -140,10 +138,8 @@ def run_minimal(also_run_simulator):
                 print("Sending list of commands to RPi...")
                 commands = app.robot.convert_all_commands()
                 client.send_message(commands)
-        
-        # If not empty, append to buffer
-        else:
-            buffer.append(received)
+
+            
 
 
         

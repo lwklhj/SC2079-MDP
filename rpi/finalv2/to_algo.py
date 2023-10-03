@@ -24,7 +24,7 @@ class algoInterface:
 
     def write(self,message):
         try:
-            message = message + '\n'
+            message = message + '!'
             self.clientSocket.send(bytes(message,"utf-8"))
             # print("Sent to Algo: ", message)
         except Exception as e:
