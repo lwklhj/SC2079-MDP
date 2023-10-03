@@ -77,7 +77,7 @@ def run_minimal(also_run_simulator):
 
     buffer = []
     while True:
-        received = client.socket.recv(4096)  # 4096 is the buffer size
+        received = client.socket.recv(64768)  # 4096 is the buffer size
         buffer.append(received)
         # Join bytes into byte string
         data = b''.join(buffer)
@@ -87,12 +87,34 @@ def run_minimal(also_run_simulator):
         if "!" in data:
             # Reset buffer
             buffer.clear()
+            data = data.replace("!", "")
+            print(type(data))
+            # print(data)
             if (data.split('|')[0] == "img"):
                 try:
+                    print("1st")
                     index = data.split('|')[1]
-                    img = pickle.loads(base64.b64decode(data.split('|')[2]))
+                    print("2nd")
+                    image_data_base64 = data.split('|')[2]
+
+                    print(len(image_data_base64))
+
+                    image_data_base64 = image_data_base64[2:len(
+                        image_data_base64)-1]
+
+                    # buffer needed for multiple of 4
+                    # buffer_needed = 4 -((len(image_data_base64)) %4)
+                    # image_data_base64 += '=' * buffer_needed
+
+                    print(image_data_base64[:50])
+                    print(image_data_base64[-50:])
+                    print(len(image_data_base64))
+                    print(type(image_data_base64))
+
+                    img = pickle.loads(base64.b64decode(image_data_base64))
+                    print("3rd")
                     # Load Model
-                    MODEL_FILE_PATH = 'best.pt'
+                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
                     model = YOLO(MODEL_FILE_PATH)
                     # Start imrec
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
@@ -105,9 +127,39 @@ def run_minimal(also_run_simulator):
                                 if lines:
                                     first_integer = int(lines[0].split()[0])
                                     print("Detected image:",
-                                        classes[first_integer])
+                                          classes[first_integer])
                     # Send result back
-                    client.send_message(f"imgID|{index}|{classes[first_integer]}")
+                    image_dict = {
+                        11: "1",
+                        12: "2",
+                        13: "3",
+                        14: "4",
+                        15: "5",
+                        16: "6",
+                        17: "7",
+                        18: "8",
+                        19: "9",
+                        20: "A",
+                        21: "B",
+                        22: "C",
+                        23: "D",
+                        24: "E",
+                        25: "F",
+                        26: "G",
+                        27: "H",
+                        28: "S",
+                        29: "T",
+                        30: "U",
+                        31: "V",
+                        32: "W",
+                        33: "X",
+                        34: "Y",
+                        35: "Z"
+                    }
+                    # client.send_message(
+                    #     f"imgID|{index}|{classes[first_integer]}")
+                    client.send_message(
+                        f"imgID|{index}|{image_dict[classes[first_integer]]}")
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
 
@@ -139,10 +191,6 @@ def run_minimal(also_run_simulator):
                 commands = app.robot.convert_all_commands()
                 client.send_message(commands)
 
-            
-
-
-        
         # data = data.decode()  # convert to string
 
         # print("Got data from RPi:")
