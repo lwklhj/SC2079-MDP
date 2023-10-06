@@ -32,7 +32,7 @@ def parse_obstacle_data(data) -> List[Obstacle]:
 def run_simulator():
     # Fill in obstacle positions with respect to lower bottom left corner.
     # (x-coordinate, y-coordinate, Direction)
-    obstacles = [[65,175,-90,0]]
+    obstacles = [[65,175,-90,0],[125,175,-90,1]]
     # obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
     #              [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
     obs = parse_obstacle_data(obstacles)
@@ -298,5 +298,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    run_minimal(False)
-    # run_simulator()
+    # run_minimal(False)
+    run_simulator()
