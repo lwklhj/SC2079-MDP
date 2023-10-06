@@ -158,8 +158,11 @@ def run_minimal(also_run_simulator):
                     }
                     # client.send_message(
                     #     f"imgID|{index}|{classes[first_integer]}")
-                    client.send_message(
-                        f"imgID|{index}|{image_dict[classes[first_integer]]}")
+                    response = f"imgID|{index}|{image_dict[classes[first_integer]]}"
+                    if (len(data.split("|") == 4)):
+                        response += f"|{data.split('|')[3]}"
+
+                    client.send_message(response)
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
 
