@@ -19,7 +19,8 @@ ROBOT_TURN_RADIUS = 20 * SCALING_FACTOR
 ROBOT_SPEED_PER_SECOND = 100 * SCALING_FACTOR
 # Please read briefing notes from Imperial
 ROBOT_S_FACTOR = ROBOT_LENGTH / ROBOT_TURN_RADIUS
-ROBOT_SAFETY_DISTANCE = 15 * SCALING_FACTOR
+ROBOT_SAFETY_DISTANCE = 20 * SCALING_FACTOR
+#ROBOT_SAFETY_DISTANCE = 15 * SCALING_FACTOR
 # Time provided for scanning an obstacle image in seconds.
 ROBOT_SCAN_TIME = 1
 
@@ -31,8 +32,9 @@ GRID_NUM_GRIDS = GRID_LENGTH // GRID_CELL_LENGTH
 
 # Obstacle Attributes
 OBSTACLE_LENGTH = 10 * SCALING_FACTOR
-OBSTACLE_SAFETY_WIDTH = ROBOT_SAFETY_DISTANCE // 3 * \
-    4  # With respect to the center of the obstacle
+OBSTACLE_SAFETY_WIDTH = ROBOT_SAFETY_DISTANCE 
+#// 3 * \
+ #   4  # With respect to the center of the obstacle
 # Currently is 15//3*4 = 20
 
 # Path Finding Attributes

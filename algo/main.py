@@ -32,8 +32,9 @@ def parse_obstacle_data(data) -> List[Obstacle]:
 def run_simulator():
     # Fill in obstacle positions with respect to lower bottom left corner.
     # (x-coordinate, y-coordinate, Direction)
-    obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
-                 [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
+    obstacles = [[65,175,-90,0]]
+    # obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
+    #              [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
     obs = parse_obstacle_data(obstacles)
     app = AlgoSimulator(obs)
     app.init()
@@ -114,11 +115,11 @@ def run_minimal(also_run_simulator):
                     img = pickle.loads(base64.b64decode(image_data_base64))
                     print("3rd")
                     # Load Model
-                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
+                    MODEL_FILE_PATH = '/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo/best.pt'
                     model = YOLO(MODEL_FILE_PATH)
                     # Start imrec
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
-                                            save_conf=True, project="/Users/jordan/Documents/Github/SC2079-MDP/algo")
+                                            save_conf=True, project="/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo")
                     classes = results[0].names
                     for file in os.listdir(results[0].save_dir+'/labels'):
                         if file.endswith('.txt'):
@@ -126,6 +127,7 @@ def run_minimal(also_run_simulator):
                                 lines = f.readlines()
                                 if lines:
                                     first_integer = int(lines[0].split()[0])
+                                    print(first_integer)
                                     print("Detected image:",
                                           classes[first_integer])
                     # Send result back
@@ -157,8 +159,14 @@ def run_minimal(also_run_simulator):
                         35: "Z"
                     }
                     # client.send_message(
-                    #     f"imgID|{index}|{classes[first_integer]}")
-                    response = f"imgID|{index}|{image_dict[classes[first_integer]]}"
+                    #     f"imgID|{index}|{classes[first_integer]}")                    
+                    client.send_message(response)
+                    if int(classes[first_integer]) in image_dict:
+                        return_msg = image_dict[int(classes[first_integer])]
+                    else:
+                        return_msg = classes[first_integer]
+                    
+                    response = f"imgID|{index}|{return_msg}"
                     if (len(data.split("|") == 4)):
                         response += f"|{data.split('|')[3]}"
 
