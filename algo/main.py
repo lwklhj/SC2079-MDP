@@ -119,13 +119,14 @@ def run_minimal(also_run_simulator):
                     img = pickle.loads(base64.b64decode(image_data_base64))
                     print("3rd")
                     # Load Model
-                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
+                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best1.pt'
                     model = YOLO(MODEL_FILE_PATH)
                     folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
                     # Start imrec
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
                                             save_conf=True, project=folder_path)
                     classes = results[0].names
+                    first_integer = -1
                     for file in os.listdir(results[0].save_dir+'/labels'):
                         if file.endswith('.txt'):
                             with open(results[0].save_dir+'/labels/'+file, 'r') as f:
@@ -135,15 +136,19 @@ def run_minimal(also_run_simulator):
                                     print(first_integer)
                                     print("Detected image:",
                                           classes[first_integer])
-                    # Send result back
-                    response = f"imgID|{index}|{classes[first_integer]}"
-                    # if (len(data.split("|") == 4)):
-                    #     response += f"|{data.split('|')[3]}"
-
-                    client.send_message(response)
                     count_scans += 1
                     if(len(obstacles)==count_scans):
                         image_join.collate_images(folder_path)
+                    
+                    if first_integer != -1:  
+                        # Send result back
+                        response = f"imgID|{index}|{classes[first_integer]}"
+                        # if (len(data.split("|") == 4)):
+                        #     response += f"|{data.split('|')[3]}"
+                        print("Sending response: ", response)
+                        client.send_message(response)
+                        print("Sent response")
+                    
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
 
