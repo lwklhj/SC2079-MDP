@@ -23,6 +23,7 @@ class imrecInterface:
         self.picam2 = Picamera2()
         config = self.picam2.create_still_configuration(main={"format": "RGB888", "size": (640,480)}, raw={"size" : (3280,2464)})
         self.picam2.configure(config)
+        self.picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
         self.i = 0
     
     # Defunct
