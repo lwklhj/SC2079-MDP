@@ -21,7 +21,7 @@ class imrecInterface:
         # TF_MODEL_FILE_PATH = 'best.pt' # The default path to the saved TensorFlow Lite model
         #  self.model = YOLO(TF_MODEL_FILE_PATH)
         self.picam2 = Picamera2()
-        config = self.picam2.create_still_configuration(main={"format": "RGB888"})
+        config = self.picam2.create_still_configuration(main={"format": "RGB888", "size": (640,480)}, raw={"size" : (3280,2464)})
         self.picam2.configure(config)
         self.i = 0
     
@@ -78,6 +78,8 @@ class imrecInterface:
         self.picam2.start()
         img = self.picam2.capture_array("main")
         self.RPI.algo.write(f"img|{index}|{base64.b64encode(pickle.dumps(img))}")
+
+        #self.picam2.capture_file("test.jpg")
 
         # results = self.model.predict(img, save = True, imgsz=640, conf=0.5, save_txt=True, save_conf=True, project = "/home/pi/SC2079-MDP/rpi/finalv2")
         # classes = results[0].names
