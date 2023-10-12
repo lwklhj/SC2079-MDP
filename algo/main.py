@@ -3,6 +3,7 @@ import time
 import pickle
 from typing import List
 
+import image_join
 import settings
 from app import AlgoSimulator, AlgoMinimal
 from entities.assets.direction import Direction
@@ -77,6 +78,7 @@ def run_minimal(also_run_simulator):
     # server.close()
 
     buffer = []
+    count_scans = 0
     while True:
         received = client.socket.recv(64768)  # 4096 is the buffer size
         buffer.append(received)
@@ -93,6 +95,7 @@ def run_minimal(also_run_simulator):
             # print(data)
             if (data.split('|')[0] == "img"):
                 try:
+                    
                     print("1st")
                     index = data.split('|')[1]
                     print("2nd")
@@ -117,9 +120,10 @@ def run_minimal(also_run_simulator):
                     # Load Model
                     MODEL_FILE_PATH = '/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo/best.pt'
                     model = YOLO(MODEL_FILE_PATH)
+                    folder_path = "/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo/predictions"
                     # Start imrec
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
-                                            save_conf=True, project="/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo")
+                                            save_conf=True, project=folder_path)
                     classes = results[0].names
                     for file in os.listdir(results[0].save_dir+'/labels'):
                         if file.endswith('.txt'):
@@ -171,6 +175,9 @@ def run_minimal(also_run_simulator):
                         response += f"|{data.split('|')[3]}"
 
                     client.send_message(response)
+                    count_scans += 1
+                    if(len(obstacles)==count_scans):
+                        image_join.collate_images(folder_path)
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
 
