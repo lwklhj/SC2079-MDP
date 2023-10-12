@@ -63,7 +63,7 @@ class STMInterface:
             print("This is the cmd_numb:", cmd_num)
             cmd_header = "".join(cmd[0:2])
             print("this is the cmd_header:", cmd_header)
-            cmd = cmd_header + str(cmd_num)
+            cmd = cmd_header + str(cmd_num).rjust(2, "0")
             cmd=cmd.lstrip()
         else:
             cmd_header = "".join(cmd[0:2])
