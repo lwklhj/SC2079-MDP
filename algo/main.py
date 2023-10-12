@@ -132,10 +132,17 @@ def run_minimal(also_run_simulator):
                             with open(results[0].save_dir+'/labels/'+file, 'r') as f:
                                 lines = f.readlines()
                                 if lines:
-                                    first_integer = int(lines[0].split()[0])
+                                    if len(lines) != 1:
+                                        first_line = 0
+                                        first_integer = int(lines[first_line].split()[0])
+                                        while(first_integer == 30):
+                                            first_line += 1
+                                            first_integer = int(lines[first_line].split()[0])
+                                    else:
+                                        first_integer = int(lines[0].split()[0])
                                     print(first_integer)
                                     print("Detected image:",
-                                          classes[first_integer])
+                                        classes[first_integer])
                     count_scans += 1
                     if(len(obstacles)==count_scans):
                         image_join.collate_images(folder_path)
