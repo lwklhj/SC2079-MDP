@@ -133,19 +133,25 @@ def run_minimal(also_run_simulator):
                                 lines = f.readlines()
                                 if lines:
                                     if len(lines) != 1:
-                                        first_line = 0
-                                        first_integer = int(lines[first_line].split()[0])
-                                        while(first_integer == 30):
-                                            first_line += 1
-                                            first_integer = int(lines[first_line].split()[0])
+                                        biggest_px = 0.0
+                                        for i in range(len(lines)):
+                                            x = float(lines[i].split()[3])
+                                            y = float(lines[i].split()[4])
+                                            if (x*y > biggest_px and int(lines[i].split()[0]) != 30):
+                                                biggest_px = x*y
+                                                first_integer = int(lines[i].split()[0])
+
+                                        # first_line = 0
+                                        # first_integer = int(lines[first_line].split()[0])
+                                       
+                                        # while(first_integer == 30):
+                                        #     first_line += 1
+                                        #     first_integer = int(lines[first_line].split()[0])
                                     else:
                                         first_integer = int(lines[0].split()[0])
                                     print(first_integer)
                                     print("Detected image:",
                                         classes[first_integer])
-                    count_scans += 1
-                    if(len(obstacles)==count_scans):
-                        image_join.collate_images(folder_path)
                     
                     if first_integer != -1:  
                         # Send result back
@@ -155,6 +161,10 @@ def run_minimal(also_run_simulator):
                         print("Sending response: ", response)
                         client.send_message(response)
                         print("Sent response")
+                    
+                    count_scans += 1
+                    if(len(obstacles)==count_scans):
+                        image_join.collate_images(folder_path)
                     
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
