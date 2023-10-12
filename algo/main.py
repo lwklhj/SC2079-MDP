@@ -33,7 +33,8 @@ def parse_obstacle_data(data) -> List[Obstacle]:
 def run_simulator():
     # Fill in obstacle positions with respect to lower bottom left corner.
     # (x-coordinate, y-coordinate, Direction)
-    obstacles = [[65,175,-90,0],[125,175,-90,1]]
+    obstacles = [[65, 45, 180, 0], [15, 125, -90, 1], [115, 95, 180, 2],
+                 [165, 55, 90, 3], [145, 145, -90, 4], [85, 175, 0, 5], [45, 185, -90, 6], [125, 5, 90, 7]]
     # obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
     #              [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
     obs = parse_obstacle_data(obstacles)
@@ -80,7 +81,7 @@ def run_minimal(also_run_simulator):
     buffer = []
     count_scans = 0
     while True:
-        received = client.socket.recv(64768)  # 4096 is the buffer size
+        received = client.socket.recv(64768000)  # 4096 is the buffer size
         buffer.append(received)
         # Join bytes into byte string
         data = b''.join(buffer)
@@ -118,9 +119,9 @@ def run_minimal(also_run_simulator):
                     img = pickle.loads(base64.b64decode(image_data_base64))
                     print("3rd")
                     # Load Model
-                    MODEL_FILE_PATH = '/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo/best.pt'
+                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
                     model = YOLO(MODEL_FILE_PATH)
-                    folder_path = "/Users/tirthoza/Desktop/MDP/SC2079-MDP/algo/predictions"
+                    folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
                     # Start imrec
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
                                             save_conf=True, project=folder_path)
@@ -135,44 +136,9 @@ def run_minimal(also_run_simulator):
                                     print("Detected image:",
                                           classes[first_integer])
                     # Send result back
-                    image_dict = {
-                        11: "1",
-                        12: "2",
-                        13: "3",
-                        14: "4",
-                        15: "5",
-                        16: "6",
-                        17: "7",
-                        18: "8",
-                        19: "9",
-                        20: "A",
-                        21: "B",
-                        22: "C",
-                        23: "D",
-                        24: "E",
-                        25: "F",
-                        26: "G",
-                        27: "H",
-                        28: "S",
-                        29: "T",
-                        30: "U",
-                        31: "V",
-                        32: "W",
-                        33: "X",
-                        34: "Y",
-                        35: "Z"
-                    }
-                    # client.send_message(
-                    #     f"imgID|{index}|{classes[first_integer]}")                    
-                    client.send_message(response)
-                    if int(classes[first_integer]) in image_dict:
-                        return_msg = image_dict[int(classes[first_integer])]
-                    else:
-                        return_msg = classes[first_integer]
-                    
-                    response = f"imgID|{index}|{return_msg}"
-                    if (len(data.split("|") == 4)):
-                        response += f"|{data.split('|')[3]}"
+                    response = f"imgID|{index}|{classes[first_integer]}"
+                    # if (len(data.split("|") == 4)):
+                    #     response += f"|{data.split('|')[3]}"
 
                     client.send_message(response)
                     count_scans += 1
@@ -305,5 +271,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    # run_minimal(False)
-    run_simulator()
+    run_minimal(False)
+    # run_simulator()
