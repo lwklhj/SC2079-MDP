@@ -34,7 +34,7 @@ class ModifiedAStar:
         neighbours = []
 
         # Check travel straights.
-        straight_dist = 10 * settings.SCALING_FACTOR
+        straight_dist = 5 * settings.SCALING_FACTOR
         straight_commands = [
             StraightCommand(straight_dist),
             StraightCommand(-straight_dist)
