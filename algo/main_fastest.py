@@ -111,17 +111,18 @@ def run_minimal(also_run_simulator):
                     results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
                                             save_conf=True, project=folder_path)
                     classes = results[0].names
-                    for file in os.listdir(results[0].save_dir+'/labels'):
-                        if file.endswith('.txt'):
-                            with open(results[0].save_dir+'/labels/'+file, 'r') as f:
-                                lines = f.readlines()
-                                if lines:
-                                    first_integer = int(lines[0].split()[0])
-                                    print(first_integer)
-                                    print("Detected image:",
-                                          classes[first_integer])
-                    
+
+                    # for file in os.listdir(results[0].save_dir+'/labels'):
+                    #     if file.endswith('.txt'):
+                    #         with open(results[0].save_dir+'/labels/'+file, 'r') as f:
+                    #             lines = f.readlines()
+                    #             if lines:
+                    #                 first_integer = int(lines[0].split()[0])
+                    #                 print(first_integer)
+                    #                 print("Detected image:",
+                    #                       classes[first_integer])
                     first_integer = 38
+                    
                     #Navigating the first obstacle
                     if count_scans == 0:
                         # Go right
