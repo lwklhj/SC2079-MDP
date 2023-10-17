@@ -18,6 +18,10 @@ class FastestCarTask:
             time.sleep(0.06)
         print(self.distance_1)
         self.RPI.imrec.take_picture(1)
+        # Wait for commands from algo
+        while(self.algo.status == 'stopped'):
+            pass
+        # Poll stm commands completion
         while(self.RPI.algo.status == 'running'):
             pass
         while(self.ultrasonic.measure() > 40):
