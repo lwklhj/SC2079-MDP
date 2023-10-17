@@ -1,4 +1,6 @@
 from ultrasonic import Ultrasonic
+import time
+
 class FastestCarTask:
     def __init__(self,RPI):
         self.RPI = RPI
@@ -13,6 +15,7 @@ class FastestCarTask:
         while(self.ultrasonic.measure() > 40):
             self.RPI.stm.send("f0010")
             self.distance_1 += 10
+            time.sleep(0.06)
         print(self.distance_1)
         #self.enqueueCommand("l0020")
         #result = self.RPI.imrec.take_picture()
