@@ -8,6 +8,7 @@ from to_stm import *
 from bullseye import *
 from testfile import *
 import socket
+from ultrasonic import *
 
 
 class RPI:
@@ -39,8 +40,10 @@ class RPI:
 
 
         # self.imrec.connectImrec()
-rpi = RPI()
-rpi.connect()
+#rpi = RPI()
+#rpi.connect()
+us = Ultrasonic()
+print("distance is " + us.measure())
 # rpi.bullseye.start()
 # rpi.imrec.take_picture()
 #rpi.testfile.start()
