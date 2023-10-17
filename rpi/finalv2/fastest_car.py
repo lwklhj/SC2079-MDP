@@ -11,11 +11,18 @@ class FastestCarTask:
         
     def start(self):
         # Activate ultrasonic sensor
-
-        while(self.ultrasonic.measure() > 40):
-            self.RPI.stm.send("f0010")
-            self.distance_1 += 10
-            time.sleep(0.06)
+        measured = int(self.ultrasonic.measure())
+        while(measured > 40):
+            if measured - 20 < 40:
+              temp = measured - 40
+              self.distance_1 += temp
+              self.RPI.stm.send("f00" + str(temp))
+              break
+            else:
+              self.RPI.stm.send("f0020")
+              self.distance_1 += 20
+              time.sleep(0.06)
+              measured = int(self.ultrasonic.measure())
         print(self.distance_1)
         self.RPI.imrec.take_picture(1)
         # Wait for commands from algo
@@ -24,10 +31,17 @@ class FastestCarTask:
         # Poll stm commands completion
         while(self.RPI.algo.status == 'running'):
             pass
-        while(self.ultrasonic.measure() > 40):
-            self.RPI.stm.send("f0010")
-            self.distance_2 += 10
-            time.sleep(0.06)
+        measured = int(self.ultrasonic.measure())
+        while(measured > 40):
+            if measured - 20 < 40:
+              temp = measured - 40
+              self.distance_2 += temp
+              self.RPI.stm.send("f00" + str(temp))
+            else:
+              self.RPI.stm.send("f0020")
+              self.distance_2 += 20
+              time.sleep(0.06)
+              measured = int(self.ultrasonic.measure())
         print(self.distance_2)
         #self.enqueueCommand("l0020")
         #result = self.RPI.imrec.take_picture()

@@ -68,7 +68,7 @@ class androidInterface:
                     #if(len(message) == 5):
                     #    self.RPI.stm.send(message)
                     elif(message == "path"):
-                        return
+                        self.RPI.fastcar.start()
                     # Obstacle data commands
                     #elif(message == "Start"):
                     #    self.RPI.algo.write(self.stored_commands)
