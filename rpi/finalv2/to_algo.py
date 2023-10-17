@@ -46,7 +46,7 @@ class algoInterface:
                     print("From ALGO:", commands)
                 if (type(commands) is str):
                     data = commands.split("|")
-                    self.RPI.android.write(f"[TARGET, {data[1]}, {data[2]}]")
+                    #self.RPI.android.write(f"[TARGET, {data[1]}, {data[2]}]")
                 else:
                     self.commands = commands
                     cThread = threading.Thread(target = self.commandsThread)
@@ -134,14 +134,14 @@ class algoInterface:
             print(command)
             if(command[0] == 's'):
                 print("Send image")
-                self.RPI.android.write(f"[ROBOT, '{command}']")
+                #self.RPI.android.write(f"[ROBOT, '{command}']")
                 self.RPI.imrec.take_picture(int(command[1:]))
             else:
                 self.RPI.stm.send(command)
                 try:
                     next_command = commands[i+1]
                     # Give coord to Android
-                    self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
+                    #self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
                     i += 1
                 except StopIteration:
                     break
