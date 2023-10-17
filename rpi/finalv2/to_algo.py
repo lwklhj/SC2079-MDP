@@ -11,6 +11,7 @@ class algoInterface:
     def __init__(self, RPI):
         self.RPI = RPI
         self.clientSocket = socket.socket()
+        self.status = 'stopped'
     
     def connectAlgo(self):
         self.clientSocket, self.address = self.RPI.serverSocket.accept()
@@ -125,6 +126,7 @@ class algoInterface:
                 self.connectAlgo()
 
     def commandsThread(self):
+        self.status = 'running'
         commands = self.commands
         i = 0
         while(i < len(commands)):
@@ -144,6 +146,7 @@ class algoInterface:
                 except StopIteration:
                     break
             i += 1
+        self.status = 'stopped'
 
 
 

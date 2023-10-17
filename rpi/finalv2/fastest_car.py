@@ -17,6 +17,14 @@ class FastestCarTask:
             self.distance_1 += 10
             time.sleep(0.06)
         print(self.distance_1)
+        self.RPI.imrec.take_picture(1)
+        while(self.RPI.algo.status == 'running'):
+            pass
+        while(self.ultrasonic.measure() > 40):
+            self.RPI.stm.send("f0010")
+            self.distance_2 += 10
+            time.sleep(0.06)
+        print(self.distance_2)
         #self.enqueueCommand("l0020")
         #result = self.RPI.imrec.take_picture()
 
