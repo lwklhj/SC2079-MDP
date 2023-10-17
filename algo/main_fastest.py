@@ -65,9 +65,9 @@ def run_minimal(also_run_simulator):
     buffer = []
     count_scans = 0
 
-    while True: 
+    while True:
         received = client.socket.recv(64768000)  # 4096 is the buffer size
-        buffer.append(received) 
+        buffer.append(received)
         # Join bytes into byte string
         data = b''.join(buffer)
         data = data.decode()
@@ -81,8 +81,9 @@ def run_minimal(also_run_simulator):
             # print(data)
             if (data.split('|')[0] == "img"):
                 try:
-                    
+
                     print("1st")
+                    #Index which was used to recognise the image index in Week 8
                     index = data.split('|')[1]
                     print("2nd")
                     image_data_base64 = data.split('|')[2]
@@ -103,14 +104,14 @@ def run_minimal(also_run_simulator):
 
                     img = pickle.loads(base64.b64decode(image_data_base64))
                     print("3rd")
-                    # # Load Model
-                    # MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
-                    # model = YOLO(MODEL_FILE_PATH)
-                    # folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
-                    # # Start imrec
-                    # results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
-                    #                         save_conf=True, project=folder_path)
-                    # classes = results[0].names
+                    # Load Model
+                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/kenze.pt'
+                    model = YOLO(MODEL_FILE_PATH)
+                    folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
+                    # Start imrec
+                    results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
+                                            save_conf=True, project=folder_path)
+                    classes = results[0].names
 
                     image_dict = {
                         11: "1",
@@ -144,50 +145,54 @@ def run_minimal(also_run_simulator):
                         39: 39,
                         40: 40
                     }
-                    # for file in os.listdir(results[0].save_dir+'/labels'):
-                    #     if file.endswith('.txt'):
-                    #         with open(results[0].save_dir+'/labels/'+file, 'r') as f:
-                    #             lines = f.readlines()
-                    #             if lines:
-                    #                 first_integer = int(lines[0].split()[0])
-                    #                 print(first_integer)
-                    #                 print("Detected image:",
-                    #                       classes[first_integer])
-                    first_integer = 38
-                    
-                    #Navigating the first obstacle
+
+                    for file in os.listdir(results[0].save_dir+'/labels'):
+                        if file.endswith('.txt'):
+                            with open(results[0].save_dir+'/labels/'+file, 'r') as f:
+                                lines = f.readlines()
+                                if lines:
+                                    first_integer = int(lines[0].split()[0])
+                                    print(first_integer)
+                                    print("Detected image:",
+                                          classes[first_integer])
+
+                    # Navigating the first obstacle
                     if count_scans == 0:
                         # Go right
-                        if image_dict[first_integer] == 38:
-                            movement_list = ["r0090", "l0090", "l0090", "r0090"]
+                        if classes[first_integer] == 38:
+                            movement_list = ["r0090", "l0090",
+                                             "f0010", "l0090", "r0090"]
                             client.send_message(movement_list)
                         # Go left
-                        elif image_dict[first_integer] == 39:
-                            movement_list = ["l0090", "r0090", "b0020", "r0090", "l0090"]
+                        elif classes[first_integer] == 39:
+                            movement_list = ["l0090", "r0090",
+                                             "f0010", "r0090", "l0090"]
                             client.send_message(movement_list)
-                    
-                    #Navigating second obstacle
+
+                    # Navigating second obstacle
                     if count_scans == 1:
                         # Go right
-                        if image_dict[first_integer] == 38:
-                            movement_list = ["r0090", "f0020", "l0090", "l0090"]
+                        if classes[first_integer] == 38:
+                            movement_list = [
+                                "r0090", "f0020", "l0090", "l0090"]
                             client.send_message(movement_list)
                         # Go left
-                        elif image_dict[first_integer] == 39:
+                        elif classes[first_integer] == 39:
                             movement_list = ["l0090"]
                             client.send_message(movement_list)
-                    
-                    
+
                     count_scans += 1
-                    if(2==count_scans):
+                    if (2 == count_scans):
                         image_join.collate_images(folder_path)
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
+            # If the data is not an image, it is distance travelled data
+            else:
+                data = data.split(',')  # Split on delimiter
 
-                
+            
 
-        #send command and add it in a stack as well, to use the stack for the return process.
-
+        # send command and add it in a stack as well, to use the stack for the return process.
 
     # while True:
     #     received = client.socket.recv(64768000)  # 4096 is the buffer size
@@ -205,7 +210,7 @@ def run_minimal(also_run_simulator):
     #         # print(data)
     #         if (data.split('|')[0] == "img"):
     #             try:
-                    
+
     #                 print("1st")
     #                 index = data.split('|')[1]
     #                 print("2nd")
