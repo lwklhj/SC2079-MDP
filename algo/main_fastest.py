@@ -103,15 +103,47 @@ def run_minimal(also_run_simulator):
 
                     img = pickle.loads(base64.b64decode(image_data_base64))
                     print("3rd")
-                    # Load Model
-                    MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
-                    model = YOLO(MODEL_FILE_PATH)
-                    folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
-                    # Start imrec
-                    results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
-                                            save_conf=True, project=folder_path)
-                    classes = results[0].names
+                    # # Load Model
+                    # MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best.pt'
+                    # model = YOLO(MODEL_FILE_PATH)
+                    # folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
+                    # # Start imrec
+                    # results = model.predict(img, save=True, imgsz=640, conf=0.5, save_txt=True,
+                    #                         save_conf=True, project=folder_path)
+                    # classes = results[0].names
 
+                    image_dict = {
+                        11: "1",
+                        12: "2",
+                        13: "3",
+                        14: "4",
+                        15: "5",
+                        16: "6",
+                        17: "7",
+                        18: "8",
+                        19: "9",
+                        20: "A",
+                        21: "B",
+                        22: "C",
+                        23: "D",
+                        24: "E",
+                        25: "F",
+                        26: "G",
+                        27: "H",
+                        28: "S",
+                        29: "T",
+                        30: "U",
+                        31: "V",
+                        32: "W",
+                        33: "X",
+                        34: "Y",
+                        35: "Z",
+                        36: 36,
+                        37: 37,
+                        38: 38,
+                        39: 39,
+                        40: 40
+                    }
                     # for file in os.listdir(results[0].save_dir+'/labels'):
                     #     if file.endswith('.txt'):
                     #         with open(results[0].save_dir+'/labels/'+file, 'r') as f:
@@ -126,22 +158,22 @@ def run_minimal(also_run_simulator):
                     #Navigating the first obstacle
                     if count_scans == 0:
                         # Go right
-                        if classes[first_integer] == 38:
-                            movement_list = ["r0090", "l0090", "b0020", "l0090", "r0090"]
+                        if image_dict[first_integer] == 38:
+                            movement_list = ["r0090", "l0090", "l0090", "r0090"]
                             client.send_message(movement_list)
                         # Go left
-                        elif classes[first_integer] == 39:
+                        elif image_dict[first_integer] == 39:
                             movement_list = ["l0090", "r0090", "b0020", "r0090", "l0090"]
                             client.send_message(movement_list)
                     
                     #Navigating second obstacle
                     if count_scans == 1:
                         # Go right
-                        if classes[first_integer] == 38:
+                        if image_dict[first_integer] == 38:
                             movement_list = ["r0090", "f0020", "l0090", "l0090"]
                             client.send_message(movement_list)
                         # Go left
-                        elif classes[first_integer] == 39:
+                        elif image_dict[first_integer] == 39:
                             movement_list = ["l0090"]
                             client.send_message(movement_list)
                     
