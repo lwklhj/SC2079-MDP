@@ -14,11 +14,12 @@ class Ultrasonic:
         time.sleep(0.00001)
         GPIO.output(self.PIN_TRIGGER, GPIO.LOW)
 
-        while GPIO.input(self.PIN_ECHO) == GPIO.low:
+        while GPIO.input(self.PIN_ECHO) == GPIO.LOW:
             start = time.time()
         while GPIO.input(self.PIN_ECHO) == GPIO.high:
             end = time.time()
             
         duration = end - start
         distance = (duration * 34000) / 2
+        print("Measured Distance: ", distance)
         return distance

@@ -1,25 +1,21 @@
+from ultrasonic import Ultrasonic
 class FastestCarTask:
     def __init__(self,RPI):
         self.RPI = RPI
+        self.ultrasonic = Ultrasonic()
         self.commands = []
+        self.distance_1 = 0
+        self.distance_2 = 0
         
     def start(self):
         # Activate ultrasonic sensor
-        self.enqueueCommand("uuuuu")
-        self.enqueueCommand("l0020")
-        result = self.RPI.imrec.take_picture()
-        if(result == "left"):
-            self.RPI.stm.send("l0090")
-            self.RPI.stm.send("r0090")
-            self.RPI.stm.send("r0090")
-            self.RPI.stm.send("l0090")
-        else:
-            self.RPI.stm.send("r0090")
-            self.RPI.stm.send("l0090")
-            self.RPI.stm.send("l0090")
-            self.RPI.stm.send("r0090")
 
-        self.RPI.stm.send("l0020")
+        while(self.ultrasonic.measure() > 40):
+            self.RPI.stm.send("f0010")
+            self.distance_1 += 10
+        print(self.distance_1)
+        #self.enqueueCommand("l0020")
+        #result = self.RPI.imrec.take_picture()
 
     def enqueueCommand(self, command):
         self.commands.push(command)

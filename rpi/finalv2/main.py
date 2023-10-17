@@ -9,6 +9,7 @@ from bullseye import *
 from testfile import *
 import socket
 from ultrasonic import *
+from fastest_car import FastestCarTask
 
 
 class RPI:
@@ -42,8 +43,8 @@ class RPI:
         # self.imrec.connectImrec()
 #rpi = RPI()
 #rpi.connect()
-us = Ultrasonic()
-print("distance is " + us.measure())
 # rpi.bullseye.start()
 # rpi.imrec.take_picture()
 #rpi.testfile.start()
+fastCarTask = FastestCarTask(self)
+fastCarTask.start()
