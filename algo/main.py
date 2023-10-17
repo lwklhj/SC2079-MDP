@@ -33,8 +33,7 @@ def parse_obstacle_data(data) -> List[Obstacle]:
 def run_simulator():
     # Fill in obstacle positions with respect to lower bottom left corner.
     # (x-coordinate, y-coordinate, Direction)
-    obstacles = [[65, 45, 180, 0], [15, 125, -90, 1], [115, 95, 180, 2],
-                 [165, 55, 90, 3], [145, 145, -90, 4], [85, 175, 0, 5], [45, 185, -90, 6], [125, 5, 90, 7]]
+    obstacles = [[15,165,0,0],[55,125,-90,1],[85,55,90,2],[115,145,0,3],[155,25,180,4],[165,195,-90,5],[195,95,180,6]]
     # obstacles = [[175, 55, -90, 0], [175, 95, 90, 1],
     #              [175, 85, 180, 2], [15, 195, -90, 3], [15, 55, 0, 4]]
     obs = parse_obstacle_data(obstacles)
@@ -96,7 +95,7 @@ def run_minimal(also_run_simulator):
             # print(data)
             if (data.split('|')[0] == "img"):
                 try:
-                    
+
                     print("1st")
                     index = data.split('|')[1]
                     print("2nd")
@@ -120,6 +119,8 @@ def run_minimal(also_run_simulator):
                     print("3rd")
                     # Load Model
                     MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best1.pt'
+                    # MODEL_FILE_PATH = '/Users/jordan/Documents/Github/SC2079-MDP/algo/best_NEW.pt'
+
                     model = YOLO(MODEL_FILE_PATH)
                     folder_path = "/Users/jordan/Documents/Github/SC2079-MDP/algo/predictions"
                     # Start imrec
@@ -139,21 +140,23 @@ def run_minimal(also_run_simulator):
                                             y = float(lines[i].split()[4])
                                             if (x*y > biggest_px and int(lines[i].split()[0]) != 30):
                                                 biggest_px = x*y
-                                                first_integer = int(lines[i].split()[0])
+                                                first_integer = int(
+                                                    lines[i].split()[0])
 
                                         # first_line = 0
                                         # first_integer = int(lines[first_line].split()[0])
-                                       
+
                                         # while(first_integer == 30):
                                         #     first_line += 1
                                         #     first_integer = int(lines[first_line].split()[0])
                                     else:
-                                        first_integer = int(lines[0].split()[0])
+                                        first_integer = int(
+                                            lines[0].split()[0])
                                     print(first_integer)
                                     print("Detected image:",
-                                        classes[first_integer])
-                    
-                    if first_integer != -1:  
+                                          classes[first_integer])
+
+                    if first_integer != -1:
                         # Send result back
                         response = f"imgID|{index}|{classes[first_integer]}"
                         # if (len(data.split("|") == 4)):
@@ -161,11 +164,11 @@ def run_minimal(also_run_simulator):
                         print("Sending response: ", response)
                         client.send_message(response)
                         print("Sent response")
-                    
+
                     count_scans += 1
-                    if(len(obstacles)==count_scans):
+                    if (len(obstacles) == count_scans):
                         image_join.collate_images(folder_path)
-                    
+
                 except Exception as e:
                     print("IMAGE RECOGNITION ERROR: ", e)
 
@@ -293,5 +296,5 @@ def run_rpi():
 
 
 if __name__ == '__main__':
-    run_minimal(False)
-    # run_simulator()
+    # run_minimal(False)
+    run_simulator()
