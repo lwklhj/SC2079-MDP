@@ -4,8 +4,8 @@ import time
 class Ultrasonic:
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
-        self.PIN_TRIGGER = 23
-        self.PIN_ECHO = 24
+        self.PIN_TRIGGER = 16
+        self.PIN_ECHO = 18
         GPIO.setup(self.PIN_TRIGGER, GPIO.OUT)
         GPIO.setup(self.PIN_ECHO, GPIO.IN)
         
@@ -16,7 +16,7 @@ class Ultrasonic:
 
         while GPIO.input(self.PIN_ECHO) == GPIO.LOW:
             start = time.time()
-        while GPIO.input(self.PIN_ECHO) == GPIO.high:
+        while GPIO.input(self.PIN_ECHO) == GPIO.HIGH:
             end = time.time()
             
         duration = end - start
