@@ -36,6 +36,7 @@ OBSTACLE_SAFETY_WIDTH = ROBOT_SAFETY_DISTANCE // 3 * \
     4  # With respect to the center of the obstacle
 # Currently is 15//3*4 = 2
 # OBSTACLE_SAFETY_WIDTH = ROBOT_SAFETY_DISTANCE // 3 * 5
+OBSTACLE_TWO_LENGTH  = 70
 
 # Path Finding Attributes
 PATH_TURN_COST = 999 * ROBOT_SPEED_PER_SECOND * ROBOT_TURN_RADIUS
