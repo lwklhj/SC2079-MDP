@@ -46,5 +46,5 @@ class RPI:
 # rpi.bullseye.start()
 # rpi.imrec.take_picture()
 #rpi.testfile.start()
-fastCarTask = FastestCarTask(self)
+fastCarTask = FastestCarTask()
 fastCarTask.start()
