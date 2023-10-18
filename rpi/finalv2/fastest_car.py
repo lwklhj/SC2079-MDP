@@ -24,6 +24,9 @@ class FastestCarTask:
               time.sleep(0.06)
               measured = int(self.ultrasonic.measure())
         print(self.distance_1)
+        # Send distance to algo
+        self.RPI.algo.write(f"dist1|{self.distance_1}")
+        # Take picture
         self.RPI.imrec.take_picture(1)
         # Wait for commands from algo
         while(self.algo.status == 'stopped'):
@@ -43,6 +46,13 @@ class FastestCarTask:
               time.sleep(0.06)
               measured = int(self.ultrasonic.measure())
         print(self.distance_2)
+        self.RPI.algo.write(f"dist2|{self.distance_2}")
+        self.RPI.imrec.take_picture(2)
+        while(self.algo.status == 'stopped'):
+            pass
+        # Poll stm commands completion
+        while(self.RPI.algo.status == 'running'):
+            pass
         #self.enqueueCommand("l0020")
         #result = self.RPI.imrec.take_picture()
 

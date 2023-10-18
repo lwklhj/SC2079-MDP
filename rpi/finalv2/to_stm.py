@@ -85,6 +85,10 @@ class STMInterface:
                 print("help me")
                 if(s[0:3] == "ACK"):
                     break
+                # Try to send the IR distance travelled to algo
+                else:
+                    self.RPI.algo.write(f"IR|{s}")
+
                     
             except:
                 print("Failed to send command to STM!")
