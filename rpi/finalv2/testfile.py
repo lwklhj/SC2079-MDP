@@ -3,4 +3,4 @@ class testInterface:
         self.RPI = RPI
 
     def start(self):
-        self.RPI.stm.send("R0090")
+        self.RPI.stm.send("FR20")

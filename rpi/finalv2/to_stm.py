@@ -97,7 +97,7 @@ class STMInterface:
                     break
                 # Try to send the IR distance travelled to algo
                 else:
-                    distance = s.split("|")[0]
+                    distance = int(float(s.split("|")[0]))
                     self.RPI.algo.write(f"IR|{distance}")
 
                     

@@ -35,7 +35,7 @@ class RPI:
         # initialise test
         self.testfile = testInterface(self)
 
-        self.fastcar = FastestCarTask(self))
+        self.fastcar = FastestCarTask(self)
 
     def connect(self):
         threading.Thread(target=self.android.connectAndroid).start()
@@ -47,6 +47,6 @@ rpi = RPI()
 rpi.connect()
 # rpi.bullseye.start()
 # rpi.imrec.take_picture()
-#rpi.testfile.start()
+rpi.testfile.start()
 #fastCarTask = FastestCarTask(rpi)
 #fastCarTask.start()
