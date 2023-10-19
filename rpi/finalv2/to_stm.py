@@ -88,7 +88,7 @@ class STMInterface:
         while True:
             try:
                 #s = self.ser.read(10).decode().rstrip().lstrip()
-                s = self.ser.readline().decode.strip()
+                s = self.ser.readline().decode().strip()
                 print("RECEIVED FROM STM: ", s)
                 print("help me")
                 #if(s[0:3] == "ACK"):
