@@ -144,13 +144,13 @@ class algoInterface:
                 self.RPI.imrec.take_picture(int(command[1:]))
             else:
                 self.RPI.stm.send(command)
-                try:
-                    next_command = commands[i+1]
-                    # Give coord to Android
-                    #self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
-                    i += 1
-                except StopIteration:
-                    break
+                # try:
+                #     next_command = commands[i+1]
+                #     # Give coord to Android
+                #     #self.RPI.android.write(f"[ROBOT, '{command}', '{next_command}']")
+                #     i += 1
+                # except StopIteration:
+                #     break
             i += 1
         self.status = 'stopped'
         self.curIndex += 1

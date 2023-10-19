@@ -231,45 +231,42 @@ def run_minimal(also_run_simulator):
                 reverse_movement_list_1 = reverse_commands(movement_list_1)
                 match direction:
                     case 'L':
-                        movement_list_2.extend(["r0090", "f0010", "r0090", "f" + str(ideal_distance).rjust(4, "0"), "f0050",  "f" + str(ideal_distance).rjust(4, "0"), "r0090", "f0010", "r0090",  "f" + str(ideal_distance).rjust(4, "0"), "l0090"])
+                        # movement_list_2.extend(["r0090", "f0010", "r0090", "f" + str(ideal_distance).rjust(4, "0"), "f0050",  "f" + str(ideal_distance).rjust(4, "0"), "r0090", "f0010", "r0090",  "f" + str(ideal_distance).rjust(4, "0"), "l0090"])
 
                         # For moving directy to centre
-                        # movement_list_2.extend(["r0090","f0010","r0090","f" + str(ideal_distance).rjust(4, "0"),"f0050","f" + str(ideal_distance).rjust(4, "0"),"r0090","f0010"])
-                        # return_y_list.extend(["r0090", "f" + str(ideal_distance).rjust(4, "0"), "l0090"])
+                        movement_list_2.extend(["r0090","f0010","r0090","f" + str(ideal_distance).rjust(4, "0"),"f0050","f" + str(ideal_distance).rjust(4, "0"),"r0090","f0010"])
+                        return_y_list.extend(["r0090", "f" + str(ideal_distance).rjust(4, "0"), "l0090"])
                     case 'R':
-                        movement_list_2.extend(["l0090", "f0010", "l0090",  "f" + str(ideal_distance).rjust(4, "0"), "f0050",  "f" + str(ideal_distance).rjust(4, "0"), "l0090", "f0010", "l0090",  "f" + str(ideal_distance).rjust(4, "0"), "r0090"])
+                        # movement_list_2.extend(["l0090", "f0010", "l0090",  "f" + str(ideal_distance).rjust(4, "0"), "f0050",  "f" + str(ideal_distance).rjust(4, "0"), "l0090", "f0010", "l0090",  "f" + str(ideal_distance).rjust(4, "0"), "r0090"])
 
                         # For moving directy to centre
-                        # movement_list_2.extend(["l0090","f0010","l0090","f" + str(ideal_distance).rjust(4, "0"),"f0050","f" + str(ideal_distance).rjust(4, "0"),"l0090","f0010"])
-                        # return_y_list.extend(["l0090", "f" + str(ideal_distance).rjust(4, "0"), "r0090"])
+                        movement_list_2.extend(["l0090","f0010","l0090","f" + str(ideal_distance).rjust(4, "0"),"f0050","f" + str(ideal_distance).rjust(4, "0"),"l0090","f0010"])
+                        return_y_list.extend(["l0090", "f" + str(ideal_distance).rjust(4, "0"), "r0090"])
                 if distance2:
-                    final_movement_list.extend(movement_list_2)
-                    final_movement_list.append(
-                        "f" + str(distance2).rjust(4, "0"))
-                    final_movement_list.extend(reverse_movement_list_1)
-                    final_movement_list.append(
-                        "f" + str(distance1).rjust(4, "0"))
+                    # final_movement_list.extend(movement_list_2)
+                    # final_movement_list.append("f" + str(distance2).rjust(4, "0"))
+                    # final_movement_list.extend(reverse_movement_list_1)
+                    # final_movement_list.append("f" + str(distance1).rjust(4, "0"))
 
                     # For moving directly to the centre
-                    # final_movement_list.extend(movement_list_2)
-                    # final_movement_list.extend(["f0050"])
-                    # final_movement_list.append("f" + str(distance2).rjust(4, "0"))
-                    # final_movement_list.extend(["f0045"])
-                    # final_movement_list.extend(return_y_list)
-                    # final_movement_list.append("f" + str(distance1).rjust(4, "0"))
+                    final_movement_list.extend(movement_list_2)
+                    final_movement_list.extend(["f0050"])
+                    final_movement_list.append("f" + str(distance2).rjust(4, "0"))
+                    final_movement_list.extend(["f0045"])
+                    final_movement_list.extend(return_y_list)
+                    final_movement_list.append("f" + str(distance1).rjust(4, "0"))
 
                 else:
-                    final_movement_list.extend(movement_list_2)
-                    final_movement_list.extend(reverse_movement_list_1)
-                    final_movement_list.append(
-                        "f" + str(distance1).rjust(4, "0"))
+                    # final_movement_list.extend(movement_list_2)
+                    # final_movement_list.extend(reverse_movement_list_1)
+                    # final_movement_list.append("f" + str(distance1).rjust(4, "0"))
 
                     # For moving directly to the centre
-                    # final_movement_list.extend(movement_list_2)
-                    # final_movement_list.extend(["f0050"])
-                    # final_movement_list.extend(["f0045"])
-                    # final_movement_list.extend(return_y_list)
-                    # final_movement_list.append("f" + str(distance1).rjust(4, "0"))
+                    final_movement_list.extend(movement_list_2)
+                    final_movement_list.extend(["f0050"])
+                    final_movement_list.extend(["f0045"])
+                    final_movement_list.extend(return_y_list)
+                    final_movement_list.append("f" + str(distance1).rjust(4, "0"))
 
                 client.send_message(final_movement_list)
 

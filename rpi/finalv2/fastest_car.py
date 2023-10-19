@@ -40,6 +40,7 @@ class FastestCarTask:
               temp = measured - 40
               self.distance_2 += temp
               self.RPI.stm.send("f00" + str(temp))
+              break
             else:
               self.RPI.stm.send("f0020")
               self.distance_2 += 20
