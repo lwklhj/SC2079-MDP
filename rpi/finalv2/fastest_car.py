@@ -49,7 +49,7 @@ class FastestCarTask:
         print(self.distance_2)
         self.RPI.algo.write(f"dist2|{self.distance_2}")
         self.RPI.imrec.take_picture(2)
-        while(self.algo.status == 'stopped'):
+        while(self.RPI.algo.status == 'stopped'):
             pass
         # Poll stm commands completion
         while(self.RPI.algo.status == 'running'):
