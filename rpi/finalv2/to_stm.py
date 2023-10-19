@@ -57,6 +57,8 @@ class STMInterface:
             cmd[0] = 'F'
             cmd[1] = 'R'
             flag = 1
+        else:
+            flag = 2
 
         if (flag == 0):
             cmd_num = int("".join(cmd[2:]))
@@ -65,11 +67,15 @@ class STMInterface:
             print("this is the cmd_header:", cmd_header)
             cmd = cmd_header + str(cmd_num).rjust(2, "0")
             cmd=cmd.lstrip()
-        else:
+        elif (flag == 1):
             cmd_header = "".join(cmd[0:2])
             cmd = cmd_header+"00"
             cmd=cmd.lstrip()
             print("cd_header for fr/fl/br/bl"+cmd)
+        else:
+            cmd_header = "".join(cmd[0:4])
+            cmd=cmd_header.lstrip()
+            print("cd_header: "+cmd)
 
         #cmd = "".join(cmd)
         print(f"Sending Commands to STM: {cmd}")
