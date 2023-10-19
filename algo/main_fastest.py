@@ -192,12 +192,12 @@ def run_minimal(also_run_simulator):
                         # Go right
                         if classes[first_integer] == 'id38':
                             image_dict["second_image"] = 'R'
-                            movement_list = ["r0090", "l0020"]
+                            movement_list = ["r0090", "FL20"]
                             client.send_message(movement_list)
                         # Go left
                         elif classes[first_integer] == 'id39':
                             image_dict["second_image"] = 'L'
-                            movement_list = ["l0090", "r0020"]
+                            movement_list = ["l0090", "FR20"]
                             client.send_message(movement_list)
 
                     count_scans += 1
@@ -208,12 +208,15 @@ def run_minimal(also_run_simulator):
                     print("IMAGE RECOGNITION ERROR: ", e)
             # If the data is not an image, it is x distance travelled for first obstacle
             elif (data.split('|')[0] == "dist1"):
+                print("RECEIVED DIST 1")
                 distance1 = data.split('|')[1]  # Split on delimiter
             # If the data is not an image, it is x distance travelled for second obstacle
             elif (data.split('|')[0] == "dist2"):
+                print("RECEIVED DIST 2")
                 distance2 = data.split('|')[1]  # Split on delimiter
             # If the data is not an image, it is y distance travelled from IR
             elif (data.split('|')[0] == "IR"):
+                print("RECEIVED DIST IR")
                 ideal_distance = data.split('|')[1]
                 direction = image_dict["second_image"]
                 final_movement_list = []
@@ -221,43 +224,45 @@ def run_minimal(also_run_simulator):
                 reverse_movement_list_1 = reverse_commands(movement_list_1)
                 match direction:
                     case 'L':
-                        movement_list_2.extend(["r0090","f0010","r0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","r0090","f0010","r0090",f"f00{ideal_distance}","l0090"])
-                        
-                        #For moving directy to centre
-                        #movement_list_2.extend(["r0090","f0010","r0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","r0090","f0010"])
-                        #return_y_list.extend(["r0090", f"f00{ideal_distance}", "l0090"])
+                        movement_list_2.extend(
+                            ["r0090", "f0010", "r0090", f"f00{ideal_distance}", "f0050", f"f00{ideal_distance}", "r0090", "f0010", "r0090", f"f00{ideal_distance}", "l0090"])
+
+                        # For moving directy to centre
+                        # movement_list_2.extend(["r0090","f0010","r0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","r0090","f0010"])
+                        # return_y_list.extend(["r0090", f"f00{ideal_distance}", "l0090"])
                     case 'R':
-                        movement_list_2.extend(["l0090","f0010","l0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","l0090","f0010","l0090",f"f00{ideal_distance}","r0090"])
-                        
-                        #For moving directy to centre
-                        #movement_list_2.extend(["l0090","f0010","l0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","l0090","f0010"])
-                        #return_y_list.extend(["l0090", f"f00{ideal_distance}", "r0090"])
+                        movement_list_2.extend(
+                            ["l0090", "f0010", "l0090", f"f00{ideal_distance}", "f0050", f"f00{ideal_distance}", "l0090", "f0010", "l0090", f"f00{ideal_distance}", "r0090"])
+
+                        # For moving directy to centre
+                        # movement_list_2.extend(["l0090","f0010","l0090",f"f00{ideal_distance}","f0050",f"f00{ideal_distance}","l0090","f0010"])
+                        # return_y_list.extend(["l0090", f"f00{ideal_distance}", "r0090"])
                 if distance2:
                     final_movement_list.extend(movement_list_2)
                     final_movement_list.append(f"f00{distance2}")
                     final_movement_list.extend(reverse_movement_list_1)
                     final_movement_list.append(f"f00{distance1}")
 
-                    #For moving directly to the centre
+                    # For moving directly to the centre
                     # final_movement_list.extend(movement_list_2)
                     # final_movement_list.extend(["f0050"])
                     # final_movement_list.append(f"f00{distance2}")
                     # final_movement_list.extend(["f0045"])
                     # final_movement_list.extend(return_y_list)
                     # final_movement_list.append(f"f00{distance1}")
-                    
+
                 else:
                     final_movement_list.extend(movement_list_2)
                     final_movement_list.extend(reverse_movement_list_1)
                     final_movement_list.append(f"f00{distance1}")
-                    
-                    #For moving directly to the centre
+
+                    # For moving directly to the centre
                     # final_movement_list.extend(movement_list_2)
                     # final_movement_list.extend(["f0050"])
                     # final_movement_list.extend(["f0045"])
                     # final_movement_list.extend(return_y_list)
-                    # final_movement_list.append(f"f00{distance1}")   
-                    
+                    # final_movement_list.append(f"f00{distance1}")
+
                 client.send_message(final_movement_list)
 
         # send command and add it in a stack as well, to use the stack for the return process.
@@ -365,7 +370,7 @@ def reverse_commands(commands):
         'l': 'r'
     }
     for command in commands:
-        if command[0] != 'f' or command[0] != 'b':
+        if command[0] != 'f' and command[0] != 'b':
             command = reverse_dict[command[0]] + command[1:]
         reversed_commands.append(command)
     return reversed_commands
