@@ -81,13 +81,16 @@ class STMInterface:
         # Our STM sends two KKs , one when receive command, one when command fully excecuted
         while True:
             try:
-                s = self.ser.read(6).decode().rstrip().lstrip()
+                #s = self.ser.read(6).decode().rstrip().lstrip()
+                s = self.ser.readline().decode.rstrip().lstrip()
                 print("help me")
-                if(s[0:3] == "ACK"):
+                #if(s[0:3] == "ACK"):
+                if("ACK" in s):
                     break
                 # Try to send the IR distance travelled to algo
                 else:
-                    self.RPI.algo.write(f"IR|{s}")
+                    distance = s.split("|")[0]
+                    self.RPI.algo.write(f"IR|{distance}")
 
                     
             except:
