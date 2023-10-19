@@ -1,19 +1,23 @@
 import serial
 import time
 
+
 class STMInterface:
-    def __init__(self,RPI):
+    def __init__(self, RPI):
         self.RPI = RPI
         try:
-            self.ser = serial.Serial('/dev/ttyUSB0', baudrate=115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE)
+            self.ser = serial.Serial('/dev/ttyUSB0', baudrate=115200, bytesize=serial.EIGHTBITS,
+                                     parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE)
             print("Connected to STM via USB 0")
         except:
             try:
-                self.ser = serial.Serial('/dev/ttyUSB1', baudrate=115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=3)
+                self.ser = serial.Serial('/dev/ttyUSB1', baudrate=115200, bytesize=serial.EIGHTBITS,
+                                         parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=3)
                 print("Connected to STM via USB 1")
             except Exception as e2:
                 print("Failed to connect to STM")
-    def send(self,cmd):
+
+    def send(self, cmd):
         # Testing purpose
         cmd = list(cmd)
         """if cmd[0] == "f":
@@ -34,7 +38,7 @@ class STMInterface:
         elif cmd[0] == "r":
             cmd[0] = 'R'
             cmd[1] = 'F'"""
-        flag = 0;
+        flag = 0
         if cmd[0] == "f":
             cmd[0] = 'F'
             cmd[1] = 'W'
@@ -66,20 +70,20 @@ class STMInterface:
             cmd_header = "".join(cmd[0:2])
             print("this is the cmd_header:", cmd_header)
             cmd = cmd_header + str(cmd_num).rjust(2, "0")
-            cmd=cmd.lstrip()
+            cmd = cmd.lstrip()
         elif (flag == 1):
             cmd_header = "".join(cmd[0:2])
             cmd = cmd_header+"00"
-            cmd=cmd.lstrip()
+            cmd = cmd.lstrip()
             print("cd_header for fr/fl/br/bl"+cmd)
         else:
             cmd_header = "".join(cmd[0:4])
-            cmd=cmd_header.lstrip()
+            cmd = cmd_header.lstrip()
             print("cd_header: "+cmd)
 
-        #cmd = "".join(cmd)
+        # cmd = "".join(cmd)
         print(f"Sending Commands to STM: {cmd}")
-        print(cmd) 
+        print(cmd)
         self.ser.write((cmd+'\r').encode())
         print("I have sent over to STM")
         self.ser.flushInput()
@@ -87,23 +91,31 @@ class STMInterface:
         # Our STM sends two KKs , one when receive command, one when command fully excecuted
         while True:
             try:
-                #s = self.ser.read(10).decode().rstrip().lstrip()
+                # s = self.ser.read(10).decode().rstrip().lstrip()
                 s = self.ser.readline().decode().strip()
+                # self.ser.flushInput()
                 print("RECEIVED FROM STM: ", s)
                 print("help me")
                 #if(s[0:3] == "ACK"):
+                #if("ACK" in s):
+                   # s = s.split("|")
+                   # print("length: ", len(s))
+                    #if(len(s) > 2):
+                        # Try to send the IR distance travelled to algo
+                        #distance = int(float(s[0]))
+                        #self.RPI.algo.write(f"IR|{distance}")
+                    #break
                 if("ACK" in s):
-
                     break
                 # Try to send the IR distance travelled to algo
                 else:
-                    distance = int(float(s.split("|")[0]))
+                    distance = s.split("|")[0]
                     self.RPI.algo.write(f"IR|{distance}")
 
-                    
             except:
                 print("Failed to send command to STM!")
                 break
-
-#stmTest = STMInterface()
-#stmTest.send('L')
+        #self.ser.flushOutput()
+        #print("Flushed output")
+# stmTest = STMInterface()
+# stmTest.send('L')
