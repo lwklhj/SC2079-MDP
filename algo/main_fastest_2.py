@@ -69,8 +69,10 @@ def run_minimal(also_run_simulator):
     # Commands for second obstacle
     movement_list_2 = []
     # Change this
-    obstacle_lt = 75
-    ideal_distance = int(obstacle_lt/2 - 25)
+    obstacle_lt = 70
+    ideal_distance = int(obstacle_lt/2 - 30)
+    if (ideal_distance<=0):
+        ideal_distance = 1
     # Image dictionary
     image_dict = {
         "first_image": '',
@@ -188,14 +190,14 @@ def run_minimal(also_run_simulator):
                         print(type(classes[first_integer]))
                         if classes[first_integer] == 'id38':
                             image_dict["first_image"] = 'R'
-                            movement_list = ["r0090", "l0090","l0090", "r0090", "b0030"]
+                            movement_list = ["r0090", "l0090","l0090", "r0090", "b0020"]
                             movement_list_1.extend(movement_list)
 
                             client.send_message(movement_list)
                         # Go left
                         elif classes[first_integer] == 'id39':
                             image_dict["first_image"] = 'L'
-                            movement_list = ["l0090", "r0090","r0090", "l0090", "b0030"]
+                            movement_list = ["l0090", "r0090","r0090", "l0090", "b0020"]
                             movement_list_1.extend(movement_list)
                             client.send_message(movement_list)
 
@@ -267,6 +269,7 @@ def run_minimal(also_run_simulator):
             elif (data.split('|')[0] == "dist1"):
                 print("RECEIVED DIST 1")
                 distance1 = data.split('|')[1]  # Split on delimiter
+                distance1 = str(int(distance1)-10)
             # If the data is not an image, it is x distance travelled for second obstacle
             elif (data.split('|')[0] == "dist2"):
                 print("RECEIVED DIST 2")
