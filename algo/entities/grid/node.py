@@ -35,14 +35,14 @@ class Node:
     def draw_self(self, screen):
         '''
         Draws each individual node
-        If its occupied by obstacles, draws it as orange
+        If its occupied by obstacles, draws it as its color
         If not will not be drawn at all, effectively appearing as empty space on the grid
         '''
         if self.occupied:  # If current node is not permissible to the robot
             rect = pygame.Rect(0, 0, settings.GRID_CELL_LENGTH,
                                settings.GRID_CELL_LENGTH)
             rect.center = self.pos.xy_pygame()
-            pygame.draw.rect(screen, colors.ORANGE, rect)
+            pygame.draw.rect(screen, colors.TEAL, rect)
 
     def draw_boundary(self, screen):
         '''

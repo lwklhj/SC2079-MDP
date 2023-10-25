@@ -95,7 +95,7 @@ class Obstacle:
         rect = pygame.Rect(0, 0, settings.OBSTACLE_LENGTH,
                            settings.OBSTACLE_LENGTH)
         rect.center = self.pos.xy_pygame()
-        pygame.draw.rect(screen, colors.BLACK, rect)
+        pygame.draw.rect(screen, colors.DARK_YELLOW, rect)
 
         # Draw the direction of the picture
         rect.width = settings.OBSTACLE_LENGTH / 2
@@ -122,16 +122,16 @@ class Obstacle:
         points = self.get_boundary_points()
 
         # Draw left border
-        pygame.draw.line(screen, colors.BLUE,
+        pygame.draw.line(screen, colors.MAGENTA,
                          points[0].xy_pygame(), points[2].xy_pygame())
         # Draw right border
-        pygame.draw.line(screen, colors.BLUE,
+        pygame.draw.line(screen, colors.MAGENTA,
                          points[1].xy_pygame(), points[3].xy_pygame())
         # Draw upper border
-        pygame.draw.line(screen, colors.BLUE,
+        pygame.draw.line(screen, colors.MAGENTA,
                          points[2].xy_pygame(), points[3].xy_pygame())
         # Draw lower border
-        pygame.draw.line(screen, colors.BLUE,
+        pygame.draw.line(screen, colors.MAGENTA,
                          points[0].xy_pygame(), points[1].xy_pygame())
 
     def draw_robot_target(self, screen):

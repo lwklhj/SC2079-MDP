@@ -87,7 +87,7 @@ class Robot:
         prev = self._start_copy.xy_pygame()
         for obs in self.brain.simple_hamiltonian:
             target = obs.get_robot_target_pos().xy_pygame()
-            pygame.draw.line(screen, colors.DARK_GREEN, prev, target)
+            pygame.draw.line(screen, colors.DARK_BLUE, prev, target)
             prev = target
 
     def draw_self(self, screen):
