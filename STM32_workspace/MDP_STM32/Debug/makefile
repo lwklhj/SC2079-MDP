@@ -59,6 +59,9 @@ MDP_STM32.list \
 OBJCOPY_HEX += \
 MDP_STM32.hex \
 
+OBJCOPY_BIN += \
+MDP_STM32.bin \
+
 
 # All Target
 all: main-build
@@ -67,8 +70,8 @@ all: main-build
 main-build: MDP_STM32.elf secondary-outputs
 
 # Tool invocations
-MDP_STM32.elf MDP_STM32.map: $(OBJS) $(USER_OBJS) C:\Users\krist\Documents\STM32_workspace\MDP_STM32\STM32F407VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MDP_STM32.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\krist\Documents\STM32_workspace\MDP_STM32\STM32F407VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MDP_STM32.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MDP_STM32.elf MDP_STM32.map: $(OBJS) $(USER_OBJS) C:\Users\Liu\ Woon\ Kit\Downloads\STMcode!\ -\ Copy\ (2)\STMcode!\ -\ Copy\ (2)\STMcode!\STM32_workspace\MDP_STM32\STM32F407VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MDP_STM32.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Liu Woon Kit\Downloads\STMcode! - Copy (2)\STMcode! - Copy (2)\STMcode!\STM32_workspace\MDP_STM32\STM32F407VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MDP_STM32.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -87,12 +90,17 @@ MDP_STM32.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+MDP_STM32.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "MDP_STM32.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) MDP_STM32.elf MDP_STM32.hex MDP_STM32.list MDP_STM32.map default.size.stdout
+	-$(RM) MDP_STM32.bin MDP_STM32.elf MDP_STM32.hex MDP_STM32.list MDP_STM32.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

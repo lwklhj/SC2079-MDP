@@ -74,7 +74,7 @@ extern "C" {
 #define DIR_BACKWARD 0
 
 #define SERVO_LEFT_MAX 50
-#define SERVO_CENTER 74
+#define SERVO_CENTER 73
 #define SERVO_RIGHT_MAX 115
 
 #define IR_CONST_A 25644.81557
@@ -86,8 +86,16 @@ extern "C" {
 #define SERVO_TURN_TIME 300
 
 #define __GET_TARGETTICK(dist, targetTick) ({ \
-	targetTick = (((dist) * DIST_M - DIST_C) / WHEEL_LENGTH * 1320) - 10; \
+	targetTick = dist*(1000/15); \
 })
+
+/*	targetTick = dist; \ */
+
+//	targetTick = (((dist) * DIST_M - DIST_C) / WHEEL_LENGTH * 1320) - 10; targetTick = dist; \
+
+//#define __GET_TARGETTICK(dist, targetTick) ({ \
+//	targetTick = (((dist) * DIST_M - DIST_C) / WHEEL_LENGTH * 1320) - 10; targetTick = dist; \
+//})
 
 #define __delay_us(_TIMER4, time) ({ \
 	__HAL_TIM_SET_COUNTER(_TIMER4, 0); \
@@ -131,6 +139,7 @@ extern "C" {
 	HAL_I2C_Mem_Read(_I2C,ICM20948__I2C_SLAVE_ADDRESS_1 << 1, ICM20948__USER_BANK_0__GYRO_ZOUT_H__REGISTER, I2C_MEMADD_SIZE_8BIT, readGyroData, 2, 0xFFFF); \
 	gyroZ = readGyroData[0] << 8 | readGyroData[1]; \
 })
+
 
 #define __ADC_Read_Dist(_ADC, dataPoint, IR_data_raw_acc, obsDist, obsTick) ({ \
 	HAL_ADC_Start(_ADC); \
@@ -190,11 +199,19 @@ extern "C" {
 	HAL_UART_Transmit(_UART, (uint8_t *) "ACK|\r\n", 6, 0xFFFF); \
 })
 
+#define __DISTANCE_TASK_DONE(_UART, msg, distance) ({ \
+	char str[20]; \
+	sprintf(str, "%6.2f|\r\n", distance);\
+	HAL_UART_Transmit(_UART, (uint8_t *)str , 9, 0xFFFF); \
+})
+
+
 #define __SET_MOTOR_DUTY(_TIMER, DUTY_L, DUTY_R)({ \
 	(_TIMER)->Instance->CCR1 = DUTY_L; \
 	(_TIMER)->Instance->CCR2 = DUTY_R; \
 })
 
+//gaydar
 #define __SET_CMD_CONFIG(cfg, _MTIMER, _STIMER, targetAngle) ({ \
 	__SET_SERVO_TURN(_STIMER, (cfg).servoTurnVal); \
 	targetAngle = (cfg).targetAngle; \
@@ -298,6 +315,7 @@ void Error_Handler(void);
 #define PWMB_GPIO_Port GPIOC
 #define TRI_Pin GPIO_PIN_4
 #define TRI_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 

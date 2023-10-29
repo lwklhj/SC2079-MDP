@@ -184,7 +184,7 @@ void ICM20948_init(I2C_HandleTypeDef * hi2c, uint8_t const selectI2cAddress, uin
 //	status = _AK09918_WriteByte(hi2c, AK09916__CNTL2__REGISTER, 0x08);
 }
 
-void ICM20948_readGyroscope_allAxises(I2C_HandleTypeDef * hi2c, uint8_t const selectI2cAddress, uint8_t const selectGyroSensitivity, int16_t readings[3]) {
+int16_t* ICM20948_readGyroscope_allAxises(I2C_HandleTypeDef * hi2c, uint8_t const selectI2cAddress, uint8_t const selectGyroSensitivity, int16_t readings[3]) {
 //	HAL_StatusTypeDef status = HAL_OK;
 	uint8_t readData[6];
 
@@ -219,6 +219,7 @@ void ICM20948_readGyroscope_allAxises(I2C_HandleTypeDef * hi2c, uint8_t const se
 			readings[Z] /= GRYO_SENSITIVITY_SCALE_FACTOR_2000DPS;
 			break;
 	}
+	return readings;
 }
 
 void ICM20948_readGyroscope_Z(I2C_HandleTypeDef * hi2c, uint8_t const selectI2cAddress, uint8_t const selectGyroSensitivity, int16_t *gyroZ) {
