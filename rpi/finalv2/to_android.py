@@ -23,7 +23,7 @@ class androidInterface:
         self.serverSocket.listen(1)
         bluetooth.advertise_service(
                 self.serverSocket, 
-                'MDP-Team20',
+                'MDP-Group6',
                 service_id=self.UUID,
                 service_classes=[self.UUID, bluetooth.SERIAL_PORT_CLASS],
                 profiles=[bluetooth.SERIAL_PORT_PROFILE]
